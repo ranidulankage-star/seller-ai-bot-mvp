@@ -931,235 +931,273 @@
   </div>
 </div>
 
-<!-- Inject main spec CSS needed for entry point mocks -->
+<!-- Scoped CSS for main-spec entry point mocks — prefixed with .spec-mock to avoid conflicts -->
 <style>
-  /* Mock frame wrappers */
-  .mock { margin-bottom: 40px; }
-  .mock .mock-label { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-  .mock .mock-title { font-size: 14.5px; font-weight: 500; }
-  .mock .mock-sub { font-size: 12px; color: var(--text-secondary); }
-  .mock-frame { background: #fff; border: 0.5px solid rgba(0,0,0,0.16); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-  /* Priority badges */
-  .pri { display: inline-flex; align-items: center; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
-  .pri-v1 { background: #E1F5EE; color: #085041; }
-  .pri-v2 { background: #FAEEDA; color: #412402; }
-  /* Browser bar */
-  .browser-bar { background: #f3eff5; padding: 8px 12px; display: flex; align-items: center; gap: 8px; }
-  .browser-bar .dot { width: 9px; height: 9px; border-radius: 50%; background: #d4c4d8; }
-  .browser-bar .url { flex: 1; font-size: 11px; color: #8a8a85; background: #fff; padding: 4px 12px; border-radius: 4px; margin-left: 6px; }
-  /* App chrome */
-  .app-header { padding: 12px 18px; border-bottom: 0.5px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 12px; background: #fff; position: relative; }
-  .logo-block { display: flex; align-items: center; gap: 8px; }
-  .logo-mark { width: 26px; height: 26px; border-radius: 6px; background: #FFE817; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; color: #000; }
-  .pill-dark { background: #000; color: #fff; padding: 4px 10px; border-radius: 5px; font-size: 12px; font-weight: 500; }
-  .header-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
-  .header-actions i { font-size: 17px; color: #5a5a58; cursor: pointer; }
-  .avatar-circle { width: 28px; height: 28px; border-radius: 50%; background: #E6F1FB; color: #0C447C; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; }
-  /* Command pill */
-  .command-pill { flex: 1; max-width: 380px; margin: 0 auto; background: #fafaf8; border: 0.5px solid rgba(0,0,0,0.16); border-radius: 20px; padding: 7px 14px; display: flex; align-items: center; gap: 10px; }
-  .command-pill.highlight { border: 1.5px solid #FFE817; background: #000; }
-  .command-pill.highlight .ph { color: rgba(255,255,255,0.7); }
-  .command-pill.highlight .kbd { background: rgba(255,255,255,0.12); border-color: transparent; color: rgba(255,255,255,0.5); }
-  .command-pill .ph { flex: 1; font-size: 13px; color: #5a5a58; }
-  .command-pill .kbd { font-size: 11px; color: #8a8a85; background: #fff; padding: 2px 6px; border-radius: 3px; border: 0.5px solid rgba(0,0,0,0.08); }
-  .command-pill .spark { font-size: 14px; color: #FFE817; }
-  /* App body & left nav */
-  .app-body { display: flex; min-height: 220px; }
-  .left-nav { width: 168px; background: #fafaf8; border-right: 0.5px solid rgba(0,0,0,0.08); padding: 10px 8px; }
-  .left-nav .item { padding: 6px 10px; font-size: 12px; color: #5a5a58; display: flex; align-items: center; gap: 8px; border-radius: 5px; }
-  .left-nav .item i { font-size: 14px; }
-  .left-nav .item.active { background: #000; color: #fff; font-weight: 500; }
-  .left-nav .item.ai-active { background: #000; color: #fff; font-weight: 500; border: 1.5px solid #FFE817; }
-  .left-nav .ai-active i.spark { color: #FFE817; }
-  .left-nav .badge-new { margin-left: auto; background: #FFE817; color: #000; padding: 1px 5px; border-radius: 3px; font-size: 9px; font-weight: 600; }
-  .main-area { flex: 1; padding: 18px 24px; position: relative; }
-  .greeting { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
-  .greeting-sub { font-size: 13px; color: #5a5a58; margin-bottom: 18px; }
-  .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
-  .metric { background: #fafaf8; border-radius: 8px; padding: 10px 12px; }
-  .metric .label { font-size: 11px; color: #5a5a58; margin-bottom: 4px; }
-  .metric .value { font-size: 18px; font-weight: 500; }
-  /* FABs */
-  .fab-round { position: absolute; bottom: 16px; right: 16px; width: 52px; height: 52px; border-radius: 50%; background: #000; border: 2px solid #FFE817; display: flex; align-items: center; justify-content: center; }
-  .fab-round i { color: #FFE817; font-size: 22px; }
-  .fab-pill { position: absolute; bottom: 16px; right: 16px; padding: 11px 16px 11px 14px; border-radius: 26px; background: #000; border: 2px solid #FFE817; display: flex; align-items: center; gap: 8px; color: #fff; }
-  .fab-pill i.spark { color: #FFE817; font-size: 15px; }
-  .fab-pill .label { font-size: 13px; font-weight: 500; }
-  .fab-pill .kbd { font-size: 10px; background: rgba(255,255,255,0.14); padding: 1px 6px; border-radius: 3px; }
-  /* Peek */
-  .peek { position: absolute; bottom: 16px; right: 16px; width: 280px; background: #000; border-radius: 14px; padding: 12px 14px; }
-  .peek .heading { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
-  .peek .heading i.spark { font-size: 13px; color: #FFE817; }
-  .peek .heading .tag { font-size: 11px; color: #FFE817; font-weight: 500; }
-  .peek .heading i.close { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.4); }
-  .peek .body { font-size: 12px; color: #fff; line-height: 1.5; margin-bottom: 10px; }
-  .peek .body b { color: #FFE817; font-weight: 500; }
-  .peek .actions { display: flex; gap: 6px; }
-  .peek .btn-primary { font-size: 11px; padding: 5px 10px; background: #FFE817; color: #412402; border: none; border-radius: 5px; font-weight: 500; cursor: pointer; }
-  .peek .btn-ghost { font-size: 11px; padding: 5px 10px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); border: none; border-radius: 5px; cursor: pointer; }
-  /* Insight strip */
-  .insight-strip { background: #000; border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; color: rgba(255,255,255,0.85); margin-bottom: 10px; }
-  .insight-strip i { font-size: 14px; color: #FFE817; }
-  .insight-strip b { font-weight: 500; color: #FFE817; }
-  /* Pros/cons */
-  .pros-cons { font-size: 12.5px; color: #5a5a58; margin-top: 8px; display: flex; flex-wrap: wrap; gap: 16px; }
-  .pros-cons .pros { color: #0F6E56; }
-  .pros-cons .cons { color: #993C1D; }
-  .pros-cons i { font-size: 13px; }
+  .spec-mock { margin-bottom: 40px; }
+  .spec-mock .smock-label { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .spec-mock .smock-title { font-size: 14px; font-weight: 500; }
+  .spec-mock .smock-sub { font-size: 12px; color: #5a5a58; }
+  .smock-frame { background: #fff; border: 0.5px solid rgba(0,0,0,0.16); border-radius: 10px; overflow: hidden; max-width: 100%; }
+  .spec-mock .spri { display: inline-flex; align-items: center; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .spec-mock .spri-v1 { background: #E1F5EE; color: #085041; }
+  .spec-mock .spri-v2 { background: #FAEEDA; color: #412402; }
+  .smock-frame .s-browser-bar { background: #f3eff5; padding: 8px 12px; display: flex; align-items: center; gap: 8px; }
+  .smock-frame .s-browser-bar .dot { width: 9px; height: 9px; border-radius: 50%; background: #d4c4d8; }
+  .smock-frame .s-browser-bar .url { flex: 1; font-size: 11px; color: #8a8a85; background: #fff; padding: 4px 12px; border-radius: 4px; margin-left: 6px; }
+  .smock-frame .s-app-header { padding: 10px 16px; border-bottom: 0.5px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 10px; background: #fff; }
+  .smock-frame .s-logo-mark { width: 24px; height: 24px; border-radius: 5px; background: #FFE817; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; color: #000; flex-shrink: 0; }
+  .smock-frame .s-pill-dark { background: #000; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+  .smock-frame .s-header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .smock-frame .s-header-actions i { font-size: 15px; color: #5a5a58; }
+  .smock-frame .s-avatar { width: 24px; height: 24px; border-radius: 50%; background: #E6F1FB; color: #0C447C; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; }
+  .smock-frame .s-app-body { display: flex; min-height: 200px; overflow: hidden; }
+  .smock-frame .s-sidenav { width: 150px; flex-shrink: 0; background: #fafaf8; border-right: 0.5px solid rgba(0,0,0,0.08); padding: 8px 6px; }
+  .smock-frame .s-sidenav .s-item { padding: 5px 8px; font-size: 11px; color: #5a5a58; display: flex; align-items: center; gap: 7px; border-radius: 4px; }
+  .smock-frame .s-sidenav .s-item i { font-size: 13px; }
+  .smock-frame .s-sidenav .s-item.active { background: #000; color: #fff; font-weight: 500; }
+  .smock-frame .s-sidenav .s-item.ai-active { background: #000; color: #fff; font-weight: 500; border: 1.5px solid #FFE817; }
+  .smock-frame .s-sidenav .s-item.ai-active i { color: #FFE817; }
+  .smock-frame .s-badge-new { margin-left: auto; background: #FFE817; color: #000; padding: 1px 4px; border-radius: 3px; font-size: 8px; font-weight: 700; }
+  .smock-frame .s-main { flex: 1; padding: 14px 18px; position: relative; min-width: 0; }
+  .smock-frame .s-greeting { font-size: 16px; font-weight: 500; margin-bottom: 3px; }
+  .smock-frame .s-greeting-sub { font-size: 11px; color: #5a5a58; margin-bottom: 12px; }
+  .smock-frame .s-metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 12px; }
+  .smock-frame .s-metric { background: #fafaf8; border-radius: 6px; padding: 8px 10px; }
+  .smock-frame .s-metric .lbl { font-size: 10px; color: #5a5a58; margin-bottom: 3px; }
+  .smock-frame .s-metric .val { font-size: 15px; font-weight: 500; }
+  .smock-frame .s-fab-round { position: absolute; bottom: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; background: #000; border: 2px solid #FFE817; display: flex; align-items: center; justify-content: center; }
+  .smock-frame .s-fab-round i { color: #FFE817; font-size: 19px; }
+  .smock-frame .s-fab-pill { position: absolute; bottom: 12px; right: 12px; padding: 9px 14px 9px 12px; border-radius: 22px; background: #000; border: 2px solid #FFE817; display: flex; align-items: center; gap: 7px; color: #fff; }
+  .smock-frame .s-fab-pill i { color: #FFE817; font-size: 13px; }
+  .smock-frame .s-fab-pill .lbl { font-size: 12px; font-weight: 500; }
+  .smock-frame .s-fab-pill .kbd { font-size: 9px; background: rgba(255,255,255,0.14); padding: 1px 5px; border-radius: 3px; }
+  .smock-frame .s-insight { background: #000; border-radius: 6px; padding: 8px 10px; display: flex; align-items: center; gap: 8px; font-size: 11px; color: rgba(255,255,255,0.85); margin-bottom: 8px; }
+  .smock-frame .s-insight i { color: #FFE817; font-size: 12px; flex-shrink: 0; }
+  .smock-frame .s-insight b { color: #FFE817; }
+  .spec-mock .s-pros-cons { font-size: 12px; color: #5a5a58; margin-top: 8px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .spec-mock .s-pros-cons .pros { color: #0F6E56; }
+  .spec-mock .s-pros-cons .cons { color: #993C1D; }
+  .spec-mock .s-pros-cons i { font-size: 12px; }
 </style>
 
-<div class="section" style="margin-top:0;">
-  <div style="display:flex; flex-direction:column; gap:0;">
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CURRENT STATE MOCK -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" style="margin-top:0; padding-top:0;">
+  <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#999;margin-bottom:14px;">Current implementation</div>
 
-    <!-- A: Subtle icon -->
-    <div class="mock">
-      <div class="mock-label">
-        <span class="pri pri-v1">v1 — preferred</span>
-        <span class="mock-title">A. Subtle sparkle icon — top bar</span>
-        <span class="mock-sub">— sits next to + button · low footprint · ⌘K shortcut still works</span>
-      </div>
-      <div class="mock-frame">
-        <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/home</span></div>
-        <div class="app-header">
-          <div class="logo-block"><div class="logo-mark">W</div><div class="pill-dark">Seller Hub</div></div>
-          <div class="header-actions" style="margin-left:auto;">
-            <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:#000;border:1.5px solid #FFE817;cursor:pointer;" title="Ask Seller AI (⌘K)"><i class="ti ti-sparkles" style="font-size:14px;color:#FFE817;"></i></span>
-            <i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="avatar-circle">R</div>
-          </div>
+  <!-- Chat tab mock -->
+  <div class="spec-mock">
+    <div class="smock-label">
+      <span class="spri spri-v1">Live now</span>
+      <span class="smock-title">Analytics → Chat tab (current entry point)</span>
+      <span class="smock-sub">— whatnot.com/dashboard/analytics/chat · scoped to analytics · full page takeover</span>
+    </div>
+    <div class="smock-frame">
+      <div class="s-browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/analytics/chat</span></div>
+      <div class="s-app-header">
+        <div class="s-logo-mark">W</div>
+        <div class="s-pill-dark">Seller Hub</div>
+        <div class="s-header-actions" style="margin-left:auto;">
+          <i class="ti ti-plus"></i><i class="ti ti-message" style="font-size:16px;"></i><i class="ti ti-bell"></i><div class="s-avatar">R</div>
         </div>
-        <div class="app-body">
-          <div class="left-nav">
-            <div class="item active"><i class="ti ti-home"></i> Home</div>
-            <div class="item"><i class="ti ti-package"></i> Inventory</div>
-            <div class="item"><i class="ti ti-broadcast"></i> Shows</div>
-            <div class="item"><i class="ti ti-receipt"></i> Orders</div>
-            <div class="item"><i class="ti ti-chart-bar"></i> Analytics</div>
+      </div>
+      <div class="s-app-body">
+        <div class="s-sidenav">
+          <div class="s-item"><i class="ti ti-home"></i> Home</div>
+          <div class="s-item"><i class="ti ti-shield-check"></i> Account</div>
+          <div class="s-item"><i class="ti ti-package"></i> Inventory</div>
+          <div class="s-item"><i class="ti ti-broadcast"></i> Shows</div>
+          <div class="s-item"><i class="ti ti-receipt"></i> Orders</div>
+          <div class="s-item active"><i class="ti ti-chart-bar"></i> Analytics</div>
+          <div class="s-item"><i class="ti ti-dollar"></i> Payouts</div>
+        </div>
+        <div class="s-main" style="padding:0; display:flex; flex-direction:column;">
+          <!-- Analytics tabs -->
+          <div style="display:flex;gap:0;border-bottom:1px solid rgba(0,0,0,0.08);padding:0 16px;">
+            <div style="padding:10px 14px;font-size:12px;color:#999;cursor:pointer;">Overview</div>
+            <div style="padding:10px 14px;font-size:12px;color:#999;cursor:pointer;">Premier Shop</div>
+            <div style="padding:10px 14px;font-size:12px;font-weight:700;color:#000;border-bottom:2px solid #000;cursor:pointer;">Chat</div>
           </div>
-          <div class="main-area">
-            <div class="greeting">Good morning, Ranidu</div>
-            <div class="metric-grid">
-              <div class="metric"><div class="label">GMV this week</div><div class="value">$18,420</div></div>
-              <div class="metric"><div class="label">Avg viewers</div><div class="value">347</div></div>
-              <div class="metric"><div class="label">Sell-through</div><div class="value">71%</div></div>
-              <div class="metric"><div class="label">Repeat buyers</div><div class="value">42</div></div>
+          <!-- Chat page content -->
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#fff;">
+            <div style="font-size:20px;font-weight:700;margin-bottom:6px;text-align:center;">Ask about your business</div>
+            <div style="font-size:13px;color:#888;margin-bottom:20px;text-align:center;">Get insights about your sales, shows, products, and more.</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;max-width:520px;">
+              <div style="background:#000;color:#fff;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;">What was my total GMV last month?</div>
+              <div style="background:#000;color:#fff;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;">How did my last live show perform?</div>
+              <div style="background:#000;color:#fff;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;">What are my top-selling products this month?</div>
+              <div style="background:#000;color:#fff;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;">Show me my top buyers in the last 30 days</div>
+            </div>
+            <!-- Input bar -->
+            <div style="width:100%;max-width:540px;border:1.5px solid rgba(0,0,0,0.15);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;background:#fff;">
+              <span style="flex:1;font-size:13px;color:#aaa;">Ask about your business data...</span>
+              <div style="width:28px;height:28px;background:#FFE817;border-radius:6px;display:flex;align-items:center;justify-content:center;"><i class="ti ti-arrow-up" style="font-size:14px;color:#000;"></i></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="pros-cons">
-        <span class="pros"><i class="ti ti-check"></i> Zero header footprint · accessible from any page · ⌘K works · tooltip explains scope</span>
-        <span class="cons"><i class="ti ti-x"></i> If v1 is analytics-only, sellers on Inventory/Orders will open it and hit a capability wall</span>
+    </div>
+    <div class="s-pros-cons">
+      <span class="pros"><i class="ti ti-check"></i> Scope matches capability · no overpromising · clean analytics-only surface</span>
+      <span class="cons"><i class="ti ti-x"></i> Buried 2 clicks deep · "Chat" tab label undersells it · empty state feels like a chatbot, not an analytics product</span>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:0;">
+  <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#999;margin-bottom:14px;">Option 1 — stay scoped, improve the placement</div>
+  <div style="display:flex; flex-direction:column; gap:0;">
+
+    <!-- A: Subtle icon -->
+    <div class="spec-mock">
+      <div class="smock-label">
+        <span class="spri spri-v1">top-level · preferred</span>
+        <span class="smock-title">A. Subtle sparkle icon — top bar</span>
+        <span class="smock-sub">— next to + button · low footprint · ⌘K works from anywhere</span>
+      </div>
+      <div class="smock-frame">
+        <div class="s-browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/home</span></div>
+        <div class="s-app-header">
+          <div class="s-logo-mark">W</div><div class="s-pill-dark">Seller Hub</div>
+          <div class="s-header-actions">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;background:#000;border:1.5px solid #FFE817;cursor:pointer;" title="Ask Seller AI (⌘K)"><i class="ti ti-sparkles" style="font-size:13px;color:#FFE817;"></i></span>
+            <i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="s-avatar">R</div>
+          </div>
+        </div>
+        <div class="s-app-body">
+          <div class="s-sidenav">
+            <div class="s-item active"><i class="ti ti-home"></i> Home</div>
+            <div class="s-item"><i class="ti ti-package"></i> Inventory</div>
+            <div class="s-item"><i class="ti ti-broadcast"></i> Shows</div>
+            <div class="s-item"><i class="ti ti-receipt"></i> Orders</div>
+            <div class="s-item"><i class="ti ti-chart-bar"></i> Analytics</div>
+          </div>
+          <div class="s-main">
+            <div class="s-greeting">Good morning, Ranidu</div>
+            <div class="s-metrics">
+              <div class="s-metric"><div class="lbl">GMV this week</div><div class="val">$18,420</div></div>
+              <div class="s-metric"><div class="lbl">Avg viewers</div><div class="val">347</div></div>
+              <div class="s-metric"><div class="lbl">Sell-through</div><div class="val">71%</div></div>
+              <div class="s-metric"><div class="lbl">Repeat buyers</div><div class="val">42</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="s-pros-cons">
+        <span class="pros"><i class="ti ti-check"></i> Zero header footprint · accessible from any page · ⌘K works</span>
+        <span class="cons"><i class="ti ti-x"></i> If analytics-only, sellers on other pages hit a capability wall</span>
       </div>
     </div>
 
     <!-- B: Left nav -->
-    <div class="mock">
-      <div class="mock-label">
-        <span class="pri pri-v1">v1 — ship</span>
-        <span class="mock-title">B. Left nav top-level item</span>
-        <span class="mock-sub">— own URL, own page · Notion AI pattern</span>
+    <div class="spec-mock">
+      <div class="smock-label">
+        <span class="spri spri-v1">top-level · ship</span>
+        <span class="smock-title">B. Left nav top-level item</span>
+        <span class="smock-sub">— own URL, own page · Notion AI pattern</span>
       </div>
-      <div class="mock-frame">
-        <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/ask</span></div>
-        <div class="app-header">
-          <div class="logo-block"><div class="logo-mark">W</div><div class="pill-dark">Seller Hub</div></div>
-          <div class="header-actions"><i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="avatar-circle">R</div></div>
+      <div class="smock-frame">
+        <div class="s-browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/ask</span></div>
+        <div class="s-app-header">
+          <div class="s-logo-mark">W</div><div class="s-pill-dark">Seller Hub</div>
+          <div class="s-header-actions"><i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="s-avatar">R</div></div>
         </div>
-        <div class="app-body">
-          <div class="left-nav">
-            <div class="item"><i class="ti ti-home"></i> Home</div>
-            <div class="item"><i class="ti ti-package"></i> Inventory</div>
-            <div class="item"><i class="ti ti-broadcast"></i> Shows</div>
-            <div class="item ai-active"><i class="ti ti-sparkles spark"></i> Ask Whatnot <span class="badge-new">NEW</span></div>
-            <div class="item"><i class="ti ti-receipt"></i> Orders</div>
-            <div class="item"><i class="ti ti-chart-bar"></i> Analytics</div>
+        <div class="s-app-body">
+          <div class="s-sidenav">
+            <div class="s-item"><i class="ti ti-home"></i> Home</div>
+            <div class="s-item"><i class="ti ti-package"></i> Inventory</div>
+            <div class="s-item"><i class="ti ti-broadcast"></i> Shows</div>
+            <div class="s-item ai-active"><i class="ti ti-sparkles"></i> Ask Whatnot <span class="s-badge-new">NEW</span></div>
+            <div class="s-item"><i class="ti ti-receipt"></i> Orders</div>
+            <div class="s-item"><i class="ti ti-chart-bar"></i> Analytics</div>
           </div>
-          <div class="main-area">
-            <div class="greeting">Good morning, Ranidu</div>
-            <div class="greeting-sub">3 insights worth a look this morning.</div>
-            <div class="insight-strip"><i class="ti ti-sparkles"></i><span>Tuesday shows convert <b>2.3× higher</b> — add another Tuesday slot?</span></div>
+          <div class="s-main">
+            <div class="s-greeting">Good morning, Ranidu</div>
+            <div class="s-greeting-sub">3 insights worth a look this morning.</div>
+            <div class="s-insight"><i class="ti ti-sparkles"></i><span>Tuesday shows convert <b>2.3× higher</b> — add another Tuesday slot?</span></div>
           </div>
         </div>
       </div>
-      <div class="pros-cons">
-        <span class="pros"><i class="ti ti-check"></i> First-class product signal · own page sets clear scope · briefing home earns daily opens</span>
+      <div class="s-pros-cons">
+        <span class="pros"><i class="ti ti-check"></i> First-class signal · briefing home earns daily opens · own clear destination</span>
         <span class="cons"><i class="ti ti-x"></i> Seller has to navigate away from current task to use it</span>
       </div>
     </div>
 
     <!-- D: Round FAB -->
-    <div class="mock">
-      <div class="mock-label">
-        <span class="pri pri-v1">v1 — ship</span>
-        <span class="mock-title">D. Round FAB — bottom right</span>
-        <span class="mock-sub">— persistent on-page affordance · pairs with subtle icon (A)</span>
+    <div class="spec-mock">
+      <div class="smock-label">
+        <span class="spri spri-v1">top-level · ship</span>
+        <span class="smock-title">D. Round FAB — bottom right</span>
+        <span class="smock-sub">— persistent on every page · pairs well with subtle icon (A)</span>
       </div>
-      <div class="mock-frame">
-        <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/home</span></div>
-        <div class="app-header">
-          <div class="logo-block"><div class="logo-mark">W</div><div class="pill-dark">Seller Hub</div></div>
-          <div class="header-actions"><i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="avatar-circle">R</div></div>
+      <div class="smock-frame">
+        <div class="s-browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/home</span></div>
+        <div class="s-app-header">
+          <div class="s-logo-mark">W</div><div class="s-pill-dark">Seller Hub</div>
+          <div class="s-header-actions"><i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="s-avatar">R</div></div>
         </div>
-        <div class="app-body">
-          <div class="left-nav">
-            <div class="item active"><i class="ti ti-home"></i> Home</div>
-            <div class="item"><i class="ti ti-broadcast"></i> Shows</div>
-            <div class="item"><i class="ti ti-receipt"></i> Orders</div>
-            <div class="item"><i class="ti ti-chart-bar"></i> Analytics</div>
+        <div class="s-app-body">
+          <div class="s-sidenav">
+            <div class="s-item active"><i class="ti ti-home"></i> Home</div>
+            <div class="s-item"><i class="ti ti-broadcast"></i> Shows</div>
+            <div class="s-item"><i class="ti ti-receipt"></i> Orders</div>
+            <div class="s-item"><i class="ti ti-chart-bar"></i> Analytics</div>
           </div>
-          <div class="main-area">
-            <div class="greeting">Good morning, Ranidu</div>
-            <div class="metric-grid">
-              <div class="metric"><div class="label">GMV this week</div><div class="value">$18,420</div></div>
-              <div class="metric"><div class="label">Avg viewers</div><div class="value">347</div></div>
-              <div class="metric"><div class="label">Sell-through</div><div class="value">71%</div></div>
-              <div class="metric"><div class="label">Repeat buyers</div><div class="value">42</div></div>
+          <div class="s-main">
+            <div class="s-greeting">Good morning, Ranidu</div>
+            <div class="s-metrics">
+              <div class="s-metric"><div class="lbl">GMV this week</div><div class="val">$18,420</div></div>
+              <div class="s-metric"><div class="lbl">Avg viewers</div><div class="val">347</div></div>
+              <div class="s-metric"><div class="lbl">Sell-through</div><div class="val">71%</div></div>
+              <div class="s-metric"><div class="lbl">Repeat buyers</div><div class="val">42</div></div>
             </div>
-            <button class="fab-round" aria-label="Ask Seller AI"><i class="ti ti-sparkles"></i></button>
+            <div class="s-fab-round"><i class="ti ti-sparkles"></i></div>
           </div>
         </div>
       </div>
-      <div class="pros-cons">
+      <div class="s-pros-cons">
         <span class="pros"><i class="ti ti-check"></i> Visible on every page · familiar pattern · no header footprint</span>
-        <span class="cons"><i class="ti ti-x"></i> Present on Inventory/Orders pages where v1 can't fully help — may generate confused interactions</span>
+        <span class="cons"><i class="ti ti-x"></i> Present everywhere but v1 only helps on Analytics — repeated deflections on other pages</span>
       </div>
     </div>
 
     <!-- E: Labeled pill FAB -->
-    <div class="mock">
-      <div class="mock-label">
-        <span class="pri pri-v1">v1 — ship</span>
-        <span class="mock-title">E. Labeled pill FAB</span>
-        <span class="mock-sub">— more legible than round FAB · shortcut visible · Arc/Raycast pattern</span>
+    <div class="spec-mock">
+      <div class="smock-label">
+        <span class="spri spri-v1">top-level · ship</span>
+        <span class="smock-title">E. Labeled pill FAB</span>
+        <span class="smock-sub">— more legible than round · shortcut visible · Arc/Raycast pattern</span>
       </div>
-      <div class="mock-frame">
-        <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/home</span></div>
-        <div class="app-header">
-          <div class="logo-block"><div class="logo-mark">W</div><div class="pill-dark">Seller Hub</div></div>
-          <div class="header-actions"><i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="avatar-circle">R</div></div>
+      <div class="smock-frame">
+        <div class="s-browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/home</span></div>
+        <div class="s-app-header">
+          <div class="s-logo-mark">W</div><div class="s-pill-dark">Seller Hub</div>
+          <div class="s-header-actions"><i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="s-avatar">R</div></div>
         </div>
-        <div class="app-body">
-          <div class="left-nav">
-            <div class="item active"><i class="ti ti-home"></i> Home</div>
-            <div class="item"><i class="ti ti-broadcast"></i> Shows</div>
-            <div class="item"><i class="ti ti-receipt"></i> Orders</div>
-            <div class="item"><i class="ti ti-chart-bar"></i> Analytics</div>
+        <div class="s-app-body">
+          <div class="s-sidenav">
+            <div class="s-item active"><i class="ti ti-home"></i> Home</div>
+            <div class="s-item"><i class="ti ti-broadcast"></i> Shows</div>
+            <div class="s-item"><i class="ti ti-receipt"></i> Orders</div>
+            <div class="s-item"><i class="ti ti-chart-bar"></i> Analytics</div>
           </div>
-          <div class="main-area">
-            <div class="greeting">Good morning, Ranidu</div>
-            <div class="metric-grid">
-              <div class="metric"><div class="label">GMV this week</div><div class="value">$18,420</div></div>
-              <div class="metric"><div class="label">Avg viewers</div><div class="value">347</div></div>
-              <div class="metric"><div class="label">Sell-through</div><div class="value">71%</div></div>
-              <div class="metric"><div class="label">Repeat buyers</div><div class="value">42</div></div>
+          <div class="s-main">
+            <div class="s-greeting">Good morning, Ranidu</div>
+            <div class="s-metrics">
+              <div class="s-metric"><div class="lbl">GMV this week</div><div class="val">$18,420</div></div>
+              <div class="s-metric"><div class="lbl">Avg viewers</div><div class="val">347</div></div>
+              <div class="s-metric"><div class="lbl">Sell-through</div><div class="val">71%</div></div>
+              <div class="s-metric"><div class="lbl">Repeat buyers</div><div class="val">42</div></div>
             </div>
-            <button class="fab-pill"><i class="ti ti-sparkles spark"></i><span class="label">Ask Seller AI</span><span class="kbd">⌘K</span></button>
+            <div class="s-fab-pill"><i class="ti ti-sparkles"></i><span class="lbl">Ask Seller AI</span><span class="kbd">⌘K</span></div>
           </div>
         </div>
       </div>
-      <div class="pros-cons">
+      <div class="s-pros-cons">
         <span class="pros"><i class="ti ti-check"></i> Branded, labeled, shortcut visible · clearer than round FAB</span>
-        <span class="cons"><i class="ti ti-x"></i> Same scope risk as D — appears everywhere, v1 only answers analytics questions</span>
+        <span class="cons"><i class="ti ti-x"></i> Same scope risk as D — everywhere but v1 is analytics-only</span>
       </div>
     </div>
 
