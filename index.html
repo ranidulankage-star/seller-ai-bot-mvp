@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller AI Bot — Entry Point Options: Analytics-Scoped vs Top-Level</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+  :root {
+    --whatnot-yellow: #FFE817;
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.14);
+    --text: #1a1a1a;
+    --text-secondary: #5a5a58;
+    --text-tertiary: #9a9a98;
+    --teal: #00b8a9;
+    --teal-light: #e6f7f6;
+    --amber: #f59e0b;
+    --amber-light: #fef3c7;
+    --red-light: #fef2f2;
+    --red: #ef4444;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --radius-lg: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, "Inter", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ─── DOC HEADER ─── */
+  .doc-header {
+    background: #fff;
+    border-bottom: 1px solid var(--border-strong);
+    padding: 32px 48px 28px;
+  }
+  .doc-header-inner { max-width: 1100px; margin: 0 auto; }
+  .doc-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--whatnot-yellow); color: #000;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 4px 10px;
+    border-radius: 4px; margin-bottom: 12px;
+  }
+  .doc-header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 6px; }
+  .doc-header p { color: var(--text-secondary); font-size: 15px; max-width: 700px; }
+  .doc-meta { display: flex; gap: 20px; margin-top: 14px; }
+  .doc-meta span { font-size: 12px; color: var(--text-tertiary); display: flex; align-items: center; gap: 5px; }
+
+  /* ─── DECISION BOX ─── */
+  .decision-box {
+    max-width: 1100px; margin: 32px auto; padding: 0 48px;
+  }
+  .decision-card {
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    position: relative;
+  }
+  .decision-card::before {
+    content: "THE CORE DECISION";
+    position: absolute; top: -11px; left: 20px;
+    background: #000; color: var(--whatnot-yellow);
+    font-size: 10px; font-weight: 800; letter-spacing: 0.1em;
+    padding: 2px 10px; border-radius: 4px;
+  }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 4px; }
+  .decision-col { padding: 16px 18px; border-radius: var(--radius); }
+  .decision-col.option-a { background: var(--teal-light); border: 1px solid rgba(0,184,169,0.3); }
+  .decision-col.option-b { background: #f5f5ff; border: 1px solid rgba(80,80,200,0.15); }
+  .decision-col h3 { font-size: 13px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 7px; }
+  .decision-col p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .decision-verdict {
+    margin-top: 16px; padding: 14px 18px;
+    background: #000; color: #fff;
+    border-radius: var(--radius); font-size: 13px; line-height: 1.6;
+  }
+  .decision-verdict strong { color: var(--whatnot-yellow); }
+
+  /* ─── SECTION ─── */
+  .section {
+    max-width: 1100px; margin: 40px auto; padding: 0 48px;
+  }
+  .section-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .section-title-group {}
+  .section-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .badge-recommended { background: var(--teal-light); color: var(--teal); border: 1px solid rgba(0,184,169,0.3); }
+  .badge-alternative { background: var(--amber-light); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
+  .section h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
+  .section-sub { color: var(--text-secondary); font-size: 14px; max-width: 600px; }
+
+  .pros-cons {
+    display: flex; gap: 12px; margin-top: 16px;
+  }
+  .pro-con-pill {
+    display: flex; align-items: center; gap: 5px;
+    padding: 5px 11px; border-radius: 20px; font-size: 12px; font-weight: 500;
+  }
+  .pro-con-pill.pro { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+  .pro-con-pill.con { background: var(--red-light); color: var(--red); border: 1px solid #fecaca; }
+
+  /* ─── MOCK GRID ─── */
+  .mocks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+  .mocks-grid.single { grid-template-columns: 1fr; }
+  .mocks-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .mock-wrapper { display: flex; flex-direction: column; gap: 10px; }
+  .mock-label {
+    font-size: 12px; font-weight: 700; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .mock-label .letter-badge {
+    width: 20px; height: 20px; border-radius: 4px;
+    background: #000; color: var(--whatnot-yellow);
+    font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ─── BROWSER FRAME ─── */
+  .frame {
+    background: #fff;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+  .browser-chrome {
+    background: #f1f1ef;
+    border-bottom: 1px solid var(--border-strong);
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .browser-dots { display: flex; gap: 5px; }
+  .browser-dots span {
+    width: 9px; height: 9px; border-radius: 50%;
+  }
+  .browser-dots span:nth-child(1) { background: #ff5f57; }
+  .browser-dots span:nth-child(2) { background: #febc2e; }
+  .browser-dots span:nth-child(3) { background: #28c840; }
+  .browser-url {
+    flex: 1; background: #fff; border: 1px solid var(--border-strong);
+    border-radius: 4px; padding: 3px 10px;
+    font-size: 11px; color: var(--text-tertiary); font-family: monospace;
+  }
+
+  /* ─── APP SHELL ─── */
+  .app-shell { display: flex; height: 520px; overflow: hidden; }
+  .app-shell.tall { height: 580px; }
+  .app-shell.short { height: 460px; }
+
+  .left-nav {
+    width: 56px; background: #fff; border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 12px 0; gap: 2px; flex-shrink: 0;
+  }
+  .nav-logo {
+    width: 32px; height: 32px; background: var(--whatnot-yellow);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900; color: #000; margin-bottom: 10px;
+  }
+  .nav-item {
+    width: 40px; height: 40px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-tertiary); cursor: pointer; position: relative;
+    transition: all 0.15s;
+  }
+  .nav-item:hover { background: var(--bg); color: var(--text); }
+  .nav-item.active { background: #000; color: var(--whatnot-yellow); }
+  .nav-item i { font-size: 18px; }
+
+  .app-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  .app-topbar {
+    height: 48px; background: #fff; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 16px; gap: 12px; flex-shrink: 0;
+  }
+  .seller-hub-pill {
+    background: var(--bg); border: 1px solid var(--border-strong);
+    border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .topbar-spacer { flex: 1; }
+  .topbar-action {
+    width: 30px; height: 30px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-secondary); cursor: pointer;
+  }
+  .topbar-action:hover { background: var(--bg); }
+  .topbar-sparkle {
+    width: 30px; height: 30px; border-radius: 6px; background: #000;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    position: relative;
+  }
+  .topbar-sparkle i { font-size: 16px; color: var(--whatnot-yellow); }
+  .topbar-sparkle .dot {
+    position: absolute; top: 4px; right: 4px;
+    width: 6px; height: 6px; background: var(--teal); border-radius: 50%;
+    border: 1.5px solid #000;
+  }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #fff;
+  }
+
+  .app-content { flex: 1; overflow: hidden; display: flex; }
+  .page-body { flex: 1; overflow: auto; padding: 20px; background: var(--bg); }
+
+  /* ─── ANALYTICS PAGE ─── */
+  .page-title-row {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;
+  }
+  .page-title { font-size: 18px; font-weight: 700; }
+  .page-subtitle { font-size: 12px; color: var(--text-tertiary); margin-bottom: 14px; }
+
+  .analytics-tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .analytics-tab {
+    padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer;
+    color: var(--text-secondary); border-bottom: 2px solid transparent;
+    margin-bottom: -1px; white-space: nowrap;
+  }
+  .analytics-tab.active { color: #000; border-bottom-color: #000; }
+  .analytics-tab.ai-tab {
+    color: #000; font-weight: 700;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .analytics-tab.ai-tab i { font-size: 13px; color: #000; }
+  .analytics-tab.ai-tab.active { border-bottom-color: #000; background: #000; color: var(--whatnot-yellow); margin: 0 0 -1px; border-radius: 6px 6px 0 0; padding: 8px 14px; }
+  .analytics-tab.ai-tab.active i { color: var(--whatnot-yellow); }
+
+  .metrics-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+  .metric-card {
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 12px; position: relative; cursor: pointer;
+  }
+  .metric-card:hover .ask-chip { opacity: 1; }
+  .metric-title { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .metric-value { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+  .metric-change { font-size: 10px; color: #16a34a; font-weight: 600; margin-top: 2px; }
+  .metric-change.down { color: var(--red); }
+  .ask-chip {
+    position: absolute; top: 8px; right: 8px;
+    opacity: 0; transition: opacity 0.15s;
+    background: #000; color: var(--whatnot-yellow);
+    border-radius: 4px; padding: 3px 7px;
+    font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .ask-chip i { font-size: 11px; }
+
+  .chart-card {
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 14px; margin-bottom: 10px; position: relative;
+  }
+  .chart-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+  }
+  .chart-title { font-size: 12px; font-weight: 700; }
+  .chart-ask-btn {
+    display: flex; align-items: center; gap: 5px;
+    background: #000; color: var(--whatnot-yellow);
+    border-radius: 5px; padding: 4px 10px;
+    font-size: 11px; font-weight: 700; cursor: pointer; border: none;
+  }
+  .chart-ask-btn i { font-size: 12px; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 64px; }
+  .bar { flex: 1; background: #e8e8e6; border-radius: 3px 3px 0 0; }
+  .bar.highlight { background: #000; }
+  .bar.yellow { background: var(--whatnot-yellow); }
+
+  /* ─── ANALYTICS SIDE PANEL ─── */
+  .analytics-panel {
+    width: 280px; background: #fff; border-left: 1px solid var(--border);
+    display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden;
+  }
+  .analytics-panel.wide { width: 320px; }
+  .panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px 10px; border-bottom: 1px solid var(--border);
+    background: #000; flex-shrink: 0;
+  }
+  .panel-header-title {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 13px; font-weight: 700; color: var(--whatnot-yellow);
+  }
+  .panel-header-title i { font-size: 15px; }
+  .panel-close { color: rgba(255,255,255,0.5); font-size: 16px; cursor: pointer; }
+  .panel-context-tag {
+    margin: 10px 14px 0; padding: 5px 10px;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 5px;
+    font-size: 10px; color: var(--text-secondary);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .panel-context-tag i { font-size: 11px; color: var(--teal); }
+  .panel-messages { flex: 1; overflow: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .msg { max-width: 100%; }
+  .msg.bot { align-self: flex-start; }
+  .msg.user { align-self: flex-end; }
+  .msg-bubble {
+    padding: 8px 11px; border-radius: 10px;
+    font-size: 12px; line-height: 1.5;
+  }
+  .msg.bot .msg-bubble { background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 2px 10px 10px 10px; }
+  .msg.user .msg-bubble { background: #000; color: #fff; border-radius: 10px 2px 10px 10px; }
+  .msg-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .msg-chip {
+    padding: 4px 9px; border-radius: 4px;
+    background: #fff; border: 1px solid var(--border-strong);
+    font-size: 11px; color: var(--text); cursor: pointer; font-weight: 500;
+  }
+  .msg-chip:hover { border-color: #000; }
+  .panel-composer { padding: 10px 14px 12px; border-top: 1px solid var(--border); flex-shrink: 0; }
+  .composer-input {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg); border: 1px solid var(--border-strong);
+    border-radius: 8px; padding: 7px 10px;
+  }
+  .composer-input input {
+    flex: 1; border: none; background: transparent; font-size: 12px;
+    color: var(--text); outline: none;
+  }
+  .composer-input input::placeholder { color: var(--text-tertiary); }
+  .composer-send {
+    width: 24px; height: 24px; background: #000; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    border: none;
+  }
+  .composer-send i { font-size: 12px; color: var(--whatnot-yellow); }
+
+  /* ─── PERSISTENT COMPOSER BAR ─── */
+  .persistent-bar {
+    border-top: 1px solid var(--border); background: #fff;
+    padding: 8px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  }
+  .persistent-bar-inner {
+    flex: 1; display: flex; align-items: center; gap: 8px;
+    background: var(--bg); border: 1.5px solid #000;
+    border-radius: 8px; padding: 7px 12px; cursor: pointer;
+  }
+  .persistent-bar-inner i { font-size: 15px; color: #000; }
+  .persistent-bar-inner span { font-size: 12px; color: var(--text-tertiary); flex: 1; }
+  .persistent-bar-inner .kbd { font-size: 10px; color: var(--text-tertiary); background: var(--bg); border: 1px solid var(--border-strong); padding: 1px 5px; border-radius: 3px; }
+
+  /* ─── OPTION 2 TOP-LEVEL ─── */
+  .fab {
+    position: absolute; bottom: 16px; right: 16px;
+    width: 44px; height: 44px; background: #000; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25); cursor: pointer; z-index: 10;
+  }
+  .fab i { font-size: 20px; color: var(--whatnot-yellow); }
+
+  .global-panel {
+    position: absolute; bottom: 68px; right: 12px;
+    width: 288px; background: #fff; border-radius: var(--radius-lg);
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-lg); z-index: 20;
+    display: flex; flex-direction: column; overflow: hidden;
+    max-height: 380px;
+  }
+  .global-panel-header {
+    background: #000; padding: 12px 14px 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .global-panel-title { display: flex; align-items: center; gap: 7px; color: var(--whatnot-yellow); font-size: 13px; font-weight: 700; }
+  .global-panel-title i { font-size: 16px; }
+  .scope-tag {
+    background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7);
+    font-size: 10px; padding: 2px 7px; border-radius: 4px; margin-top: 4px; display: inline-block;
+  }
+  .global-panel-messages { flex: 1; overflow: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .global-panel-composer { padding: 8px 12px 10px; border-top: 1px solid var(--border); }
+  .global-composer-input {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg); border: 1.5px solid #000;
+    border-radius: 8px; padding: 8px 10px;
+  }
+  .global-composer-input input {
+    flex: 1; border: none; background: transparent; font-size: 12px; outline: none; color: var(--text);
+  }
+  .global-composer-input input::placeholder { color: var(--text-tertiary); }
+
+  /* ─── ANNOTATIONS ─── */
+  .annotations { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+  .annotation {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 8px 12px; background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); font-size: 12px; line-height: 1.5;
+  }
+  .annotation .num {
+    width: 18px; height: 18px; border-radius: 50%; background: #000; color: var(--whatnot-yellow);
+    font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .annotation strong { color: var(--text); }
+  .annotation span { color: var(--text-secondary); }
+
+  /* ─── DIVIDER ─── */
+  .section-divider { height: 1px; background: var(--border); margin: 8px 0 32px; }
+
+  /* ─── RECOMMENDATION ─── */
+  .rec-section { max-width: 1100px; margin: 40px auto 60px; padding: 0 48px; }
+  .rec-card {
+    background: #000; color: #fff; border-radius: var(--radius-lg); padding: 28px 32px;
+  }
+  .rec-card h2 { font-size: 18px; font-weight: 700; color: var(--whatnot-yellow); margin-bottom: 6px; }
+  .rec-card .rec-subtitle { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
+  .rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .rec-col h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .rec-col h4.yellow { color: var(--whatnot-yellow); }
+  .rec-col h4.gray { color: rgba(255,255,255,0.5); }
+  .rec-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+  .rec-row i { font-size: 14px; color: var(--teal); margin-top: 2px; flex-shrink: 0; }
+  .rec-row i.warn { color: rgba(255,255,255,0.3); }
+  .rec-verdict {
+    margin-top: 20px; padding: 16px 20px;
+    background: rgba(255,232,23,0.12); border: 1px solid rgba(255,232,23,0.3);
+    border-radius: var(--radius); font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.9);
+  }
+  .rec-verdict strong { color: var(--whatnot-yellow); }
+
+  /* ─── HOVER DEMO CALLOUT ─── */
+  .hover-callout {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--amber-light); border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 5px; padding: 5px 10px;
+    font-size: 11px; color: #92400e; margin-top: 8px;
+  }
+
+  /* show hover state on metric card for mock B */
+  .metric-card.show-hover .ask-chip { opacity: 1; }
+
+  /* active tab for ask-ai */
+  .analytics-tabs.show-ai .analytics-tab.ai-tab { background: #000; color: var(--whatnot-yellow); border-radius: 6px 6px 0 0; padding: 8px 14px; margin-bottom: -1px; border-bottom: none; }
+  .analytics-tabs.show-ai .analytics-tab.ai-tab i { color: var(--whatnot-yellow); }
+
+  /* ─── OPTION 2 - top bar highlight ─── */
+  .topbar-sparkle.ring {
+    box-shadow: 0 0 0 2px var(--whatnot-yellow);
+  }
+
+  .callout-arrow {
+    display: inline-block; font-size: 12px; font-weight: 700; color: var(--teal);
+  }
+  .mini-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--text-tertiary); padding: 3px 0 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── DOC HEADER ─── -->
+<div class="doc-header">
+  <div class="doc-header-inner">
+    <div class="doc-label"><i class="ti ti-brand-figma"></i> Design Exploration</div>
+    <h1>Seller AI Bot — MVP Entry Point Strategy</h1>
+    <p>Should v1 live inside the Analytics tab, or debut as a top-level feature? This document mocks both paths side-by-side to make the tradeoff concrete.</p>
+    <div class="doc-meta">
+      <span><i class="ti ti-calendar"></i> June 2026</span>
+      <span><i class="ti ti-building-store"></i> Whatnot Seller Hub</span>
+      <span><i class="ti ti-tag"></i> AI · Analytics · MVP Scoping</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DECISION BOX ─── -->
+<div class="decision-box">
+  <div class="decision-card">
+    <div class="decision-grid">
+      <div class="decision-col option-a">
+        <h3><i class="ti ti-chart-bar" style="color:var(--teal)"></i> Option 1 — Analytics-Scoped</h3>
+        <p>The bot lives entirely within the Analytics tab. Sellers discover it only when they're already looking at data. Scope of answers matches scope of placement. Ship faster, measure easily, iterate in a contained surface.</p>
+      </div>
+      <div class="decision-col option-b">
+        <h3><i class="ti ti-sparkles" style="color:#7c6fff"></i> Option 2 — Top-Level from Day 1</h3>
+        <p>A persistent sparkle icon in the top bar + FAB signals a first-class product. Even if v1 only answers analytics questions, the entry point sets up the agentic future and trains a global interaction habit.</p>
+      </div>
+    </div>
+    <div class="decision-verdict">
+      <strong>The real question:</strong> Does shipping a globally-accessible bot that can <em>only answer analytics questions</em> undermine trust and create confusion — or does it correctly signal intent and earn placement early? Option 1 avoids that question entirely. Option 2 requires the product to earn its spot fast.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- OPTION 1 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title-group">
+      <div class="section-badge badge-recommended"><i class="ti ti-check"></i> Recommended for MVP</div>
+      <h2>Option 1 — Analytics-Scoped Entry Points</h2>
+      <div class="section-sub">Three possible entry point designs within the Analytics page. Pick one or combine 1A + 1B.</div>
+    </div>
+  </div>
+
+  <div class="pros-cons">
+    <div class="pro-con-pill pro"><i class="ti ti-check"></i> Scoped = credible</div>
+    <div class="pro-con-pill pro"><i class="ti ti-check"></i> Easier to measure success</div>
+    <div class="pro-con-pill pro"><i class="ti ti-check"></i> No overpromising</div>
+    <div class="pro-con-pill pro"><i class="ti ti-check"></i> Lower eng lift</div>
+    <div class="pro-con-pill con"><i class="ti ti-x"></i> Harder to discover</div>
+    <div class="pro-con-pill con"><i class="ti ti-x"></i> Limits cross-page value</div>
+    <div class="pro-con-pill con"><i class="ti ti-x"></i> Re-education cost later</div>
+  </div>
+</div>
+
+<!-- MOCK 1A + 1B side by side -->
+<div class="section" style="margin-top: 0;">
+  <div class="mocks-grid">
+
+    <!-- 1A: Ask AI Tab -->
+    <div class="mock-wrapper">
+      <div class="mock-label"><div class="letter-badge">A</div> "Ask AI" as an Analytics Tab</div>
+      <div class="frame">
+        <div class="browser-chrome">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-url">sellerhub.whatnot.com/analytics</div>
+        </div>
+        <div class="app-shell">
+          <!-- Left nav -->
+          <div class="left-nav">
+            <div class="nav-logo">W</div>
+            <div class="nav-item"><i class="ti ti-home"></i></div>
+            <div class="nav-item"><i class="ti ti-package"></i></div>
+            <div class="nav-item"><i class="ti ti-video"></i></div>
+            <div class="nav-item"><i class="ti ti-shopping-cart"></i></div>
+            <div class="nav-item active"><i class="ti ti-chart-bar"></i></div>
+          </div>
+          <!-- Main content -->
+          <div class="app-main">
+            <div class="app-topbar">
+              <div class="nav-logo" style="width:26px;height:26px;font-size:13px;border-radius:6px;">W</div>
+              <div class="seller-hub-pill">Seller Hub</div>
+              <div class="topbar-spacer"></div>
+              <div class="topbar-action"><i class="ti ti-bell"></i></div>
+              <div class="avatar">JD</div>
+            </div>
+            <div class="app-content">
+              <div class="page-body" style="flex:1;">
+                <div class="page-title-row">
+                  <div class="page-title">Analytics</div>
+                  <div style="font-size:11px;color:var(--text-tertiary)">Last 30 days</div>
+                </div>
+                <div class="page-subtitle">Your store performance at a glance</div>
+
+                <!-- Tabs with Ask AI -->
+                <div class="analytics-tabs show-ai">
+                  <div class="analytics-tab">Overview</div>
+                  <div class="analytics-tab">Sales</div>
+                  <div class="analytics-tab">Inventory</div>
+                  <div class="analytics-tab">Audience</div>
+                  <div class="analytics-tab ai-tab" style="margin-left:auto;display:flex;align-items:center;gap:5px;background:#000;color:var(--whatnot-yellow);border-radius:6px 6px 0 0;padding:8px 14px;margin-bottom:-1px;border-bottom:none;">
+                    <i class="ti ti-sparkles" style="color:var(--whatnot-yellow);font-size:13px;"></i> Ask AI
+                  </div>
+                </div>
+
+                <!-- Metrics -->
+                <div class="metrics-row" style="margin-top:14px;">
+                  <div class="metric-card">
+                    <div class="metric-title">Revenue</div>
+                    <div class="metric-value">$12,480</div>
+                    <div class="metric-change">▲ 18% vs last mo</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-title">Orders</div>
+                    <div class="metric-value">342</div>
+                    <div class="metric-change">▲ 9%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-title">Avg Order</div>
+                    <div class="metric-value">$36.49</div>
+                    <div class="metric-change down">▼ 2%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-title">Watchers</div>
+                    <div class="metric-value">1,204</div>
+                    <div class="metric-change">▲ 31%</div>
+                  </div>
+                </div>
+
+                <!-- Simple chart placeholder -->
+                <div class="chart-card">
+                  <div class="chart-header">
+                    <div class="chart-title">Revenue over time</div>
+                  </div>
+                  <div class="chart-bars">
+                    <div class="bar" style="height:40%"></div>
+                    <div class="bar" style="height:55%"></div>
+                    <div class="bar" style="height:48%"></div>
+                    <div class="bar" style="height:62%"></div>
+                    <div class="bar highlight" style="height:78%"></div>
+                    <div class="bar yellow" style="height:85%"></div>
+                    <div class="bar yellow" style="height:90%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI Panel shown when Ask AI tab active -->
+              <div class="analytics-panel">
+                <div class="panel-header">
+                  <div class="panel-header-title"><i class="ti ti-sparkles"></i> Ask AI</div>
+                  <i class="ti ti-x panel-close"></i>
+                </div>
+                <div class="panel-context-tag"><i class="ti ti-chart-bar"></i> Scoped to: Analytics · Last 30 days</div>
+                <div class="panel-messages">
+                  <div class="msg bot">
+                    <div class="msg-bubble">Hi! I can answer questions about your analytics — revenue trends, top products, audience insights, and more.</div>
+                    <div class="msg-chips">
+                      <div class="msg-chip">Why did revenue spike?</div>
+                      <div class="msg-chip">Best performing show?</div>
+                      <div class="msg-chip">Top category?</div>
+                    </div>
+                  </div>
+                  <div class="msg user"><div class="msg-bubble">Why did revenue spike last week?</div></div>
+                  <div class="msg bot"><div class="msg-bubble">Your June 7 live show drove <strong>$3,200</strong> in a single session — 2.6× your usual daily avg. Trading cards accounted for 68% of that.</div></div>
+                </div>
+                <div class="panel-composer">
+                  <div class="composer-input">
+                    <input placeholder="Ask about your analytics…" value="">
+                    <button class="composer-send"><i class="ti ti-arrow-up"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="annotation"><div class="num">1</div><div><strong>Ask AI tab</strong> — <span>sits at the far right of the existing tab row, separated visually. Clicking it opens the side panel instead of loading new content below.</span></div></div>
+        <div class="annotation"><div class="num">2</div><div><strong>Side panel</strong> — <span>context tag ("Scoped to: Analytics") makes the capability boundaries immediately legible to the seller.</span></div></div>
+        <div class="annotation"><div class="num">3</div><div><strong>Analytics stays visible</strong> — <span>the data is still in view while chatting — the panel is additive, not a replacement screen.</span></div></div>
+      </div>
+    </div>
+
+    <!-- 1B: Inline hover "Ask about this" -->
+    <div class="mock-wrapper">
+      <div class="mock-label"><div class="letter-badge">B</div> "Ask about this chart" Hover Button</div>
+      <div class="frame">
+        <div class="browser-chrome">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-url">sellerhub.whatnot.com/analytics</div>
+        </div>
+        <div class="app-shell">
+          <div class="left-nav">
+            <div class="nav-logo">W</div>
+            <div class="nav-item"><i class="ti ti-home"></i></div>
+            <div class="nav-item"><i class="ti ti-package"></i></div>
+            <div class="nav-item"><i class="ti ti-video"></i></div>
+            <div class="nav-item"><i class="ti ti-shopping-cart"></i></div>
+            <div class="nav-item active"><i class="ti ti-chart-bar"></i></div>
+          </div>
+          <div class="app-main">
+            <div class="app-topbar">
+              <div class="nav-logo" style="width:26px;height:26px;font-size:13px;border-radius:6px;">W</div>
+              <div class="seller-hub-pill">Seller Hub</div>
+              <div class="topbar-spacer"></div>
+              <div class="topbar-action"><i class="ti ti-bell"></i></div>
+              <div class="avatar">JD</div>
+            </div>
+            <div class="app-content">
+              <div class="page-body" style="flex:1;">
+                <div class="page-title-row">
+                  <div class="page-title">Analytics</div>
+                  <div style="font-size:11px;color:var(--text-tertiary)">Last 30 days</div>
+                </div>
+                <div class="page-subtitle">Your store performance at a glance</div>
+
+                <div class="analytics-tabs">
+                  <div class="analytics-tab active">Overview</div>
+                  <div class="analytics-tab">Sales</div>
+                  <div class="analytics-tab">Inventory</div>
+                  <div class="analytics-tab">Audience</div>
+                </div>
+
+                <div class="metrics-row" style="margin-top:14px;">
+                  <div class="metric-card show-hover">
+                    <div class="metric-title">Revenue</div>
+                    <div class="metric-value">$12,480</div>
+                    <div class="metric-change">▲ 18%</div>
+                    <div class="ask-chip"><i class="ti ti-sparkles"></i> Ask</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-title">Orders</div>
+                    <div class="metric-value">342</div>
+                    <div class="metric-change">▲ 9%</div>
+                    <div class="ask-chip"><i class="ti ti-sparkles"></i> Ask</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-title">Avg Order</div>
+                    <div class="metric-value">$36.49</div>
+                    <div class="metric-change down">▼ 2%</div>
+                    <div class="ask-chip"><i class="ti ti-sparkles"></i> Ask</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-title">Watchers</div>
+                    <div class="metric-value">1,204</div>
+                    <div class="metric-change">▲ 31%</div>
+                    <div class="ask-chip"><i class="ti ti-sparkles"></i> Ask</div>
+                  </div>
+                </div>
+
+                <div class="chart-card" style="border:1.5px solid #000;">
+                  <div class="chart-header">
+                    <div class="chart-title">Revenue over time</div>
+                    <button class="chart-ask-btn"><i class="ti ti-sparkles"></i> Ask about this chart</button>
+                  </div>
+                  <div class="chart-bars">
+                    <div class="bar" style="height:40%"></div>
+                    <div class="bar" style="height:55%"></div>
+                    <div class="bar" style="height:48%"></div>
+                    <div class="bar" style="height:62%"></div>
+                    <div class="bar highlight" style="height:78%"></div>
+                    <div class="bar yellow" style="height:85%"></div>
+                    <div class="bar yellow" style="height:90%"></div>
+                  </div>
+                </div>
+
+                <div class="chart-card">
+                  <div class="chart-header">
+                    <div class="chart-title">Top categories</div>
+                    <button class="chart-ask-btn"><i class="ti ti-sparkles"></i> Ask about this chart</button>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:6px;">
+                    <div style="display:flex;align-items:center;gap:8px;font-size:11px;">
+                      <div style="width:70px;color:var(--text-secondary)">Trading Cards</div>
+                      <div style="flex:1;height:8px;background:#e8e8e6;border-radius:4px;overflow:hidden;"><div style="width:68%;height:100%;background:#000;border-radius:4px;"></div></div>
+                      <div style="width:30px;text-align:right;font-weight:700;">68%</div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:11px;">
+                      <div style="width:70px;color:var(--text-secondary)">Sneakers</div>
+                      <div style="flex:1;height:8px;background:#e8e8e6;border-radius:4px;overflow:hidden;"><div style="width:20%;height:100%;background:var(--whatnot-yellow);border-radius:4px;"></div></div>
+                      <div style="width:30px;text-align:right;font-weight:700;">20%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Side panel - opened from chart ask button -->
+              <div class="analytics-panel">
+                <div class="panel-header">
+                  <div class="panel-header-title"><i class="ti ti-sparkles"></i> Ask AI</div>
+                  <i class="ti ti-x panel-close"></i>
+                </div>
+                <div class="panel-context-tag"><i class="ti ti-chart-area"></i> Context: Revenue over time chart</div>
+                <div class="panel-messages">
+                  <div class="msg bot">
+                    <div class="msg-bubble">I'm looking at your <strong>Revenue over time</strong> chart. What would you like to know?</div>
+                    <div class="msg-chips">
+                      <div class="msg-chip">What caused the spike?</div>
+                      <div class="msg-chip">Compare to last month</div>
+                    </div>
+                  </div>
+                  <div class="msg user"><div class="msg-bubble">What caused the spike?</div></div>
+                  <div class="msg bot"><div class="msg-bubble">The June 7 spike (+$3.2K) coincides with your <strong>"Summer Cards Blowout"</strong> show. 847 viewers, your highest that month.</div></div>
+                </div>
+                <div class="panel-composer">
+                  <div class="composer-input">
+                    <input placeholder="Ask about this chart…">
+                    <button class="composer-send"><i class="ti ti-arrow-up"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="annotation"><div class="num">1</div><div><strong>Inline "Ask" chip on metric cards</strong> — <span>shown on hover. Zero nav required — the question forms naturally in the moment of data consumption.</span></div></div>
+        <div class="annotation"><div class="num">2</div><div><strong>"Ask about this chart" button</strong> — <span>visible on each chart card. Pre-loads chart context into the panel automatically.</span></div></div>
+        <div class="annotation"><div class="num">3</div><div><strong>Context tag</strong> — <span>"Context: Revenue over time chart" — the panel knows what you were looking at, enabling tighter, more relevant answers.</span></div></div>
+        <div class="hover-callout"><i class="ti ti-cursor"></i> Hover state shown on Revenue card for illustration</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCK 1C: Persistent bar at bottom, full width -->
+  <div class="mock-wrapper">
+    <div class="mock-label"><div class="letter-badge">C</div> Persistent Composer Bar at Bottom of Analytics Page</div>
+    <div class="frame">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">sellerhub.whatnot.com/analytics</div>
+      </div>
+      <div class="app-shell short">
+        <div class="left-nav">
+          <div class="nav-logo">W</div>
+          <div class="nav-item"><i class="ti ti-home"></i></div>
+          <div class="nav-item"><i class="ti ti-package"></i></div>
+          <div class="nav-item"><i class="ti ti-video"></i></div>
+          <div class="nav-item"><i class="ti ti-shopping-cart"></i></div>
+          <div class="nav-item active"><i class="ti ti-chart-bar"></i></div>
+        </div>
+        <div class="app-main">
+          <div class="app-topbar">
+            <div class="nav-logo" style="width:26px;height:26px;font-size:13px;border-radius:6px;">W</div>
+            <div class="seller-hub-pill">Seller Hub</div>
+            <div class="topbar-spacer"></div>
+            <div class="topbar-action"><i class="ti ti-bell"></i></div>
+            <div class="avatar">JD</div>
+          </div>
+          <!-- Page body + persistent bar stacked -->
+          <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+            <div class="page-body" style="flex:1;">
+              <div class="page-title-row">
+                <div class="page-title">Analytics</div>
+                <div style="font-size:11px;color:var(--text-tertiary)">Last 30 days</div>
+              </div>
+              <div class="page-subtitle">Your store performance at a glance</div>
+              <div class="analytics-tabs">
+                <div class="analytics-tab active">Overview</div>
+                <div class="analytics-tab">Sales</div>
+                <div class="analytics-tab">Inventory</div>
+                <div class="analytics-tab">Audience</div>
+              </div>
+              <div class="metrics-row" style="margin-top:14px;">
+                <div class="metric-card">
+                  <div class="metric-title">Revenue</div>
+                  <div class="metric-value">$12,480</div>
+                  <div class="metric-change">▲ 18%</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-title">Orders</div>
+                  <div class="metric-value">342</div>
+                  <div class="metric-change">▲ 9%</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-title">Avg Order</div>
+                  <div class="metric-value">$36.49</div>
+                  <div class="metric-change down">▼ 2%</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-title">Watchers</div>
+                  <div class="metric-value">1,204</div>
+                  <div class="metric-change">▲ 31%</div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-header"><div class="chart-title">Revenue over time</div></div>
+                <div class="chart-bars">
+                  <div class="bar" style="height:45%"></div>
+                  <div class="bar" style="height:55%"></div>
+                  <div class="bar" style="height:70%"></div>
+                  <div class="bar highlight" style="height:80%"></div>
+                  <div class="bar yellow" style="height:90%"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Persistent bar -->
+            <div class="persistent-bar">
+              <i class="ti ti-sparkles" style="font-size:18px;color:#000;flex-shrink:0;"></i>
+              <div class="persistent-bar-inner">
+                <i class="ti ti-message" style="font-size:14px;color:var(--text-tertiary);"></i>
+                <span>Ask AI about your analytics… revenue, shows, inventory</span>
+                <div class="kbd">⌘K</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="annotations">
+      <div class="annotation"><div class="num">1</div><div><strong>Always-visible composer bar</strong> — <span>pinned to the bottom of the Analytics page. Never requires the seller to find an entry point — it's always there.</span></div></div>
+      <div class="annotation"><div class="num">2</div><div><strong>Keyboard shortcut ⌘K</strong> — <span>power sellers can trigger it instantly without reaching for the mouse. Familiar pattern from Linear, Vercel, Notion.</span></div></div>
+      <div class="annotation"><div class="num">3</div><div><strong>Placeholder copy is instructional</strong> — <span>"Ask AI about your analytics… revenue, shows, inventory" — sets expectations about what v1 can do before the first interaction.</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="padding-top:0;margin-top:0;">
+  <div class="section-divider"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- OPTION 2 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="section" style="margin-top:0;">
+  <div class="section-header">
+    <div class="section-title-group">
+      <div class="section-badge badge-alternative"><i class="ti ti-alert-triangle"></i> Current Direction — Requires Fast Product Execution</div>
+      <h2>Option 2 — Top-Level Entry Point from Day 1</h2>
+      <div class="section-sub">Sparkle icon in the top bar + FAB accessible from any page. v1 is analytics-only but the surface signals first-class product status.</div>
+    </div>
+  </div>
+
+  <div class="pros-cons">
+    <div class="pro-con-pill pro"><i class="ti ti-check"></i> Consistent entry point forever</div>
+    <div class="pro-con-pill pro"><i class="ti ti-check"></i> Sets up agentic future</div>
+    <div class="pro-con-pill pro"><i class="ti ti-check"></i> No re-education later</div>
+    <div class="pro-con-pill con"><i class="ti ti-x"></i> Overpromises if v1 is narrow</div>
+    <div class="pro-con-pill con"><i class="ti ti-x"></i> Harder to scope success metrics</div>
+    <div class="pro-con-pill con"><i class="ti ti-x"></i> "Out-of-Analytics" confusion</div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:0;">
+  <div class="mocks-grid">
+
+    <!-- 2A: Top bar sparkle + floating panel -->
+    <div class="mock-wrapper">
+      <div class="mock-label"><div class="letter-badge">A</div> Top Bar Sparkle — Panel Opened from Non-Analytics Page</div>
+      <div class="frame">
+        <div class="browser-chrome">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-url">sellerhub.whatnot.com/inventory</div>
+        </div>
+        <div class="app-shell" style="position:relative;">
+          <div class="left-nav">
+            <div class="nav-logo">W</div>
+            <div class="nav-item"><i class="ti ti-home"></i></div>
+            <div class="nav-item active"><i class="ti ti-package"></i></div>
+            <div class="nav-item"><i class="ti ti-video"></i></div>
+            <div class="nav-item"><i class="ti ti-shopping-cart"></i></div>
+            <div class="nav-item"><i class="ti ti-chart-bar"></i></div>
+          </div>
+          <div class="app-main">
+            <div class="app-topbar">
+              <div class="nav-logo" style="width:26px;height:26px;font-size:13px;border-radius:6px;">W</div>
+              <div class="seller-hub-pill">Seller Hub</div>
+              <div class="topbar-spacer"></div>
+              <div class="topbar-action"><i class="ti ti-bell"></i></div>
+              <!-- Highlighted sparkle icon -->
+              <div class="topbar-sparkle ring">
+                <i class="ti ti-sparkles"></i>
+                <div class="dot"></div>
+              </div>
+              <div class="avatar">JD</div>
+            </div>
+            <div class="app-content">
+              <div class="page-body" style="flex:1;position:relative;">
+                <div class="page-title-row" style="margin-bottom:12px;">
+                  <div class="page-title">Inventory</div>
+                </div>
+                <!-- Dimmed inventory content to focus on panel -->
+                <div style="opacity:0.35;">
+                  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+                    <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px;">
+                      <div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">In Stock</div>
+                      <div style="font-size:18px;font-weight:800;">847</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px;">
+                      <div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Listed</div>
+                      <div style="font-size:18px;font-weight:800;">312</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:10px;">
+                      <div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Low Stock</div>
+                      <div style="font-size:18px;font-weight:800;color:var(--red);">14</div>
+                    </div>
+                  </div>
+                  <div style="background:#fff;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+                    <div style="padding:10px 12px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;">All Items</div>
+                    <div style="padding:8px 12px;display:flex;gap:10px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">
+                      <span style="flex:2;font-weight:600;color:var(--text)">Item</span><span>SKU</span><span>Qty</span><span>Price</span>
+                    </div>
+                    <div style="padding:8px 12px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid var(--border);"><span style="flex:2">1st Ed Charizard Holo</span><span>TC-001</span><span>2</span><span>$480</span></div>
+                    <div style="padding:8px 12px;display:flex;gap:10px;font-size:11px;"><span style="flex:2">Jordan 1 Chicago OG</span><span>SN-042</span><span>1</span><span>$320</span></div>
+                  </div>
+                </div>
+
+                <!-- Floating global panel -->
+                <div class="global-panel">
+                  <div class="global-panel-header">
+                    <div>
+                      <div class="global-panel-title"><i class="ti ti-sparkles"></i> Whatnot AI</div>
+                      <div class="scope-tag">Analytics questions · v1 preview</div>
+                    </div>
+                    <i class="ti ti-x" style="color:rgba(255,255,255,0.4);font-size:14px;cursor:pointer;"></i>
+                  </div>
+                  <div class="global-panel-messages">
+                    <div class="msg bot">
+                      <div class="msg-bubble" style="font-size:12px;">Hi! Right now I can help you understand your <strong>analytics</strong> — revenue trends, top shows, audience data. More capabilities coming soon.</div>
+                      <div class="msg-chips">
+                        <div class="msg-chip">Revenue this month</div>
+                        <div class="msg-chip">Best show last week</div>
+                        <div class="msg-chip">Top categories</div>
+                      </div>
+                    </div>
+                    <div class="msg user"><div class="msg-bubble" style="font-size:12px;">How did my inventory affect sales?</div></div>
+                    <div class="msg bot">
+                      <div class="msg-bubble" style="font-size:12px;">I can see that <strong>14 items hit low stock</strong> during your peak revenue week. Based on your analytics, items that sold out during shows had 2× the reorder rate. I can't yet manage inventory directly — that's coming in a future update.</div>
+                    </div>
+                  </div>
+                  <div class="global-panel-composer">
+                    <div class="global-composer-input">
+                      <i class="ti ti-sparkles" style="font-size:13px;color:var(--text-tertiary);"></i>
+                      <input placeholder="Ask anything about your store…">
+                      <button class="composer-send"><i class="ti ti-arrow-up"></i></button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="annotation"><div class="num">1</div><div><strong>Sparkle icon in top bar</strong> — <span>present on every page. The yellow glow ring draws attention to it on first visit without being disruptive.</span></div></div>
+        <div class="annotation"><div class="num">2</div><div><strong>"v1 preview" scope tag</strong> — <span>sets expectations inline. Seller on Inventory page asking an inventory question gets a graceful handoff answer — not a dead end.</span></div></div>
+        <div class="annotation"><div class="num">3</div><div><strong>Risk:</strong> <span>Seller asked about inventory → bot gave a partial answer + disclaimer. This is the friction point. Repeated enough, it damages trust in the feature.</span></div></div>
+      </div>
+    </div>
+
+    <!-- 2B: Same but on Analytics page — best case -->
+    <div class="mock-wrapper">
+      <div class="mock-label"><div class="letter-badge">B</div> Top-Level FAB on Analytics Page — Best-Case Scenario</div>
+      <div class="frame">
+        <div class="browser-chrome">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-url">sellerhub.whatnot.com/analytics</div>
+        </div>
+        <div class="app-shell" style="position:relative;">
+          <div class="left-nav">
+            <div class="nav-logo">W</div>
+            <div class="nav-item"><i class="ti ti-home"></i></div>
+            <div class="nav-item"><i class="ti ti-package"></i></div>
+            <div class="nav-item"><i class="ti ti-video"></i></div>
+            <div class="nav-item"><i class="ti ti-shopping-cart"></i></div>
+            <div class="nav-item active"><i class="ti ti-chart-bar"></i></div>
+          </div>
+          <div class="app-main">
+            <div class="app-topbar">
+              <div class="nav-logo" style="width:26px;height:26px;font-size:13px;border-radius:6px;">W</div>
+              <div class="seller-hub-pill">Seller Hub</div>
+              <div class="topbar-spacer"></div>
+              <div class="topbar-action"><i class="ti ti-bell"></i></div>
+              <div class="topbar-sparkle"><i class="ti ti-sparkles"></i></div>
+              <div class="avatar">JD</div>
+            </div>
+            <div class="app-content">
+              <div class="page-body" style="flex:1;position:relative;">
+                <div class="page-title-row">
+                  <div class="page-title">Analytics</div>
+                  <div style="font-size:11px;color:var(--text-tertiary)">Last 30 days</div>
+                </div>
+                <div class="page-subtitle">Your store performance at a glance</div>
+
+                <div class="analytics-tabs">
+                  <div class="analytics-tab active">Overview</div>
+                  <div class="analytics-tab">Sales</div>
+                  <div class="analytics-tab">Inventory</div>
+                </div>
+
+                <div class="metrics-row" style="margin-top:14px;">
+                  <div class="metric-card">
+                    <div class="metric-title">Revenue</div>
+                    <div class="metric-value">$12,480</div>
+                    <div class="metric-change">▲ 18%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-title">Orders</div>
+                    <div class="metric-value">342</div>
+                    <div class="metric-change">▲ 9%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-title">Avg Order</div>
+                    <div class="metric-value">$36.49</div>
+                    <div class="metric-change down">▼ 2%</div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-title">Watchers</div>
+                    <div class="metric-value">1,204</div>
+                    <div class="metric-change">▲ 31%</div>
+                  </div>
+                </div>
+
+                <div class="chart-card">
+                  <div class="chart-header"><div class="chart-title">Revenue over time</div></div>
+                  <div class="chart-bars">
+                    <div class="bar" style="height:40%"></div>
+                    <div class="bar" style="height:55%"></div>
+                    <div class="bar" style="height:60%"></div>
+                    <div class="bar highlight" style="height:78%"></div>
+                    <div class="bar yellow" style="height:90%"></div>
+                  </div>
+                </div>
+
+                <!-- FAB -->
+                <div class="fab">
+                  <i class="ti ti-sparkles"></i>
+                </div>
+
+                <!-- Global panel, opened from FAB on Analytics -->
+                <div class="global-panel" style="bottom:68px;right:12px;max-height:340px;">
+                  <div class="global-panel-header">
+                    <div>
+                      <div class="global-panel-title"><i class="ti ti-sparkles"></i> Whatnot AI</div>
+                      <div class="scope-tag">Seeing: Analytics · Last 30 days</div>
+                    </div>
+                    <i class="ti ti-x" style="color:rgba(255,255,255,0.4);font-size:14px;"></i>
+                  </div>
+                  <div class="global-panel-messages">
+                    <div class="msg bot">
+                      <div class="msg-bubble" style="font-size:12px;">I can see you're on Analytics. Ask me anything about your revenue, shows, or audience.</div>
+                      <div class="msg-chips">
+                        <div class="msg-chip">Why did revenue jump?</div>
+                        <div class="msg-chip">Best day this month?</div>
+                      </div>
+                    </div>
+                    <div class="msg user"><div class="msg-bubble" style="font-size:12px;">What was my best day this month?</div></div>
+                    <div class="msg bot"><div class="msg-bubble" style="font-size:12px;">June 7 — <strong>$3,204</strong> revenue, 847 viewers. Your "Summer Cards Blowout" show ran for 3h 14m and hit your highest concurrent viewer count.</div></div>
+                  </div>
+                  <div class="global-panel-composer">
+                    <div class="global-composer-input">
+                      <i class="ti ti-sparkles" style="font-size:13px;color:var(--text-tertiary);"></i>
+                      <input placeholder="Ask anything…">
+                      <button class="composer-send"><i class="ti ti-arrow-up"></i></button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="annotation"><div class="num">1</div><div><strong>FAB on Analytics page</strong> — <span>this is the "best case" — seller is already in analytics, so the global bot and the actual capability are aligned. Works great here.</span></div></div>
+        <div class="annotation"><div class="num">2</div><div><strong>Context awareness</strong> — <span>"Seeing: Analytics · Last 30 days" in the scope tag. The global surface can still be context-sensitive when on the right page.</span></div></div>
+        <div class="annotation"><div class="num">3</div><div><strong>The UX gap:</strong> <span>This mock is indistinguishable from Option 1 when on the Analytics page. The real test is mock 2A — what happens when a seller opens it from Inventory or Orders.</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── RECOMMENDATION ─── -->
+<div class="rec-section">
+  <div class="rec-card">
+    <h2>Recommendation</h2>
+    <div class="rec-subtitle">Based on the mocks above, here's the clearest way to think about the choice.</div>
+    <div class="rec-grid">
+      <div class="rec-col">
+        <h4 class="yellow">Choose Option 1 (Analytics-Scoped) if...</h4>
+        <div class="rec-row"><i class="ti ti-check"></i> You want to ship fast and prove value before expanding scope</div>
+        <div class="rec-row"><i class="ti ti-check"></i> The team doesn't yet have a strong out-of-analytics answer for cross-page AI questions</div>
+        <div class="rec-row"><i class="ti ti-check"></i> You want clean success metrics (e.g. "% of Analytics sessions that use AI")</div>
+        <div class="rec-row"><i class="ti ti-check"></i> Entry point 1B (contextual hover buttons) can be added to individual charts with minimal eng lift</div>
+        <div class="rec-row"><i class="ti ti-check"></i> You're comfortable promoting the AI surface to top-level in v2 once it covers 3+ page types</div>
+      </div>
+      <div class="rec-col">
+        <h4 class="gray">Choose Option 2 (Top-Level) if...</h4>
+        <div class="rec-row"><i class="ti ti-check"></i> Leadership is committed to a public "Whatnot AI" narrative and the bot is a flagship launch</div>
+        <div class="rec-row"><i class="ti ti-check"></i> You have a strong graceful-degradation answer for cross-page questions (e.g. proactive handoff copy)</div>
+        <div class="rec-row"><i class="ti ti-check"></i> The analytics-only v1 will expand to 2+ more capabilities within 6–8 weeks of launch</div>
+        <div class="rec-row"><i class="ti ti-check" class="warn"></i> You're willing to accept some early trust damage if the feature scope is narrower than the placement implies</div>
+      </div>
+    </div>
+    <div class="rec-verdict">
+      <strong>Suggested path:</strong> Ship v1 with Option 1 entry points — specifically the combination of <strong>1A (Ask AI tab)</strong> + <strong>1B (inline chart buttons)</strong>. This covers the full analytics surface with zero discovery ambiguity. When v2 expands to inventory or show planning, graduate the bot to a top-level FAB + top bar icon at that point — the re-education cost is low because sellers already have a mental model of "AI answers questions about my store data." The risk of shipping Option 2 with an analytics-only v1 is that sellers who open the bot from the Orders or Inventory page will receive a graceful deflection, and repeated deflections erode the trust that makes the global placement valuable in the first place.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
