@@ -474,32 +474,49 @@
 <!-- ─── DOC HEADER ─── -->
 <div class="doc-header">
   <div class="doc-header-inner">
-    <div class="doc-label"><i class="ti ti-brand-figma"></i> Design Exploration</div>
-    <h1>Seller AI Bot — MVP Entry Point Strategy</h1>
-    <p>Should v1 live inside the Analytics tab, or debut as a top-level feature? This document mocks both paths side-by-side to make the tradeoff concrete.</p>
+    <div class="doc-label"><i class="ti ti-sparkles"></i> Entry Point Strategy</div>
+    <h1>Seller AI Bot — Entry Point Decision</h1>
+    <p>The MVP already ships as <strong>Analytics → Chat tab</strong>. This document asks: is that the right long-term placement, or do we elevate it to a top-level feature now? Mocks both paths with tradeoffs.</p>
     <div class="doc-meta">
       <span><i class="ti ti-calendar"></i> June 2026</span>
       <span><i class="ti ti-building-store"></i> Whatnot Seller Hub</span>
-      <span><i class="ti ti-tag"></i> AI · Analytics · MVP Scoping</span>
+      <span><i class="ti ti-tag"></i> AI · Analytics · Entry Point</span>
+      <span style="margin-left:auto;"><a href="https://ranidulankage-star.github.io/whatnot-ai-redesign/" target="_blank" style="color:#000;font-weight:600;text-decoration:none;">↗ Full vision spec</a></span>
     </div>
   </div>
 </div>
 
-<!-- ─── DECISION BOX ─── -->
+<!-- ─── CURRENT STATE ─── -->
 <div class="decision-box">
+  <div style="background:#f5f5f5;border:1.5px solid #e0e0e0;border-radius:14px;padding:20px 24px;margin-bottom:16px;">
+    <div style="font-size:10px;font-weight:800;letter-spacing:0.1em;color:#888;text-transform:uppercase;margin-bottom:12px;">Current state — shipping now</div>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;">
+        <span style="background:#000;color:#FFE817;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:700;">Analytics</span>
+        <i class="ti ti-arrow-right" style="color:#999;font-size:12px;"></i>
+        <span style="background:#000;color:#FFE817;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:700;">Chat tab</span>
+        <i class="ti ti-arrow-right" style="color:#999;font-size:12px;"></i>
+        <span style="font-size:13px;color:#555;">"Ask about your business"</span>
+      </div>
+      <div style="margin-left:auto;font-size:12px;color:#888;">whatnot.com/dashboard/analytics/chat</div>
+    </div>
+    <div style="margin-top:10px;font-size:13px;color:#555;line-height:1.6;">The bot is a tab within Analytics. Scoped, discoverable only to sellers already looking at analytics, but clearly low prominence. The question is whether to keep it here or graduate it.</div>
+  </div>
+
+  <!-- ─── DECISION BOX ─── -->
   <div class="decision-card">
     <div class="decision-grid">
       <div class="decision-col option-a">
-        <h3><i class="ti ti-chart-bar" style="color:var(--teal)"></i> Option 1 — Analytics-Scoped</h3>
-        <p>The bot lives entirely within the Analytics tab. Sellers discover it only when they're already looking at data. Scope of answers matches scope of placement. Ship faster, measure easily, iterate in a contained surface.</p>
+        <h3><i class="ti ti-chart-bar" style="color:var(--teal)"></i> Option 1 — Stay analytics-scoped</h3>
+        <p>Improve the existing entry point — better tab design, inline chart buttons, persistent composer. Keep the bot inside Analytics for v1. Graduate it to top-level when scope expands.</p>
       </div>
       <div class="decision-col option-b">
-        <h3><i class="ti ti-sparkles" style="color:#7c6fff"></i> Option 2 — Top-Level from Day 1</h3>
-        <p>A persistent sparkle icon in the top bar + FAB signals a first-class product. Even if v1 only answers analytics questions, the entry point sets up the agentic future and trains a global interaction habit.</p>
+        <h3><i class="ti ti-sparkles" style="color:#7c6fff"></i> Option 2 — Elevate to top-level now</h3>
+        <p>Move the entry point to a global sparkle icon + FAB accessible from anywhere. Even though v1 only answers analytics questions, the placement signals the full agentic vision and avoids having to re-educate sellers later.</p>
       </div>
     </div>
     <div class="decision-verdict">
-      <strong>The real question:</strong> Does shipping a globally-accessible bot that can <em>only answer analytics questions</em> undermine trust and create confusion — or does it correctly signal intent and earn placement early? Option 1 avoids that question entirely. Option 2 requires the product to earn its spot fast.
+      <strong>The real question:</strong> Does shipping a globally-accessible bot that can <em>only answer analytics questions</em> undermine trust — or does it correctly signal the agentic future and earn placement early? Option 1 is the safe, credible path. Option 2 requires the product to earn its top-level spot fast.
     </div>
   </div>
 </div>
@@ -510,20 +527,19 @@
 <div class="section">
   <div class="section-header">
     <div class="section-title-group">
-      <div class="section-badge badge-recommended"><i class="ti ti-check"></i> Recommended for MVP</div>
-      <h2>Option 1 — Analytics-Scoped Entry Points</h2>
-      <div class="section-sub">Three possible entry point designs within the Analytics page. Pick one or combine 1A + 1B.</div>
+      <div class="section-badge badge-recommended"><i class="ti ti-check"></i> Lower risk · current direction</div>
+      <h2>Option 1 — Stay analytics-scoped, improve the entry point</h2>
+      <div class="section-sub">The bot already lives in Analytics → Chat. These mocks show how to make that placement work harder — without moving it.</div>
     </div>
   </div>
 
   <div class="pros-cons">
-    <div class="pro-con-pill pro"><i class="ti ti-check"></i> Scoped = credible</div>
-    <div class="pro-con-pill pro"><i class="ti ti-check"></i> Easier to measure success</div>
-    <div class="pro-con-pill pro"><i class="ti ti-check"></i> No overpromising</div>
-    <div class="pro-con-pill pro"><i class="ti ti-check"></i> Lower eng lift</div>
-    <div class="pro-con-pill con"><i class="ti ti-x"></i> Harder to discover</div>
-    <div class="pro-con-pill con"><i class="ti ti-x"></i> Limits cross-page value</div>
-    <div class="pro-con-pill con"><i class="ti ti-x"></i> Re-education cost later</div>
+    <div class="pro-con-pill pro"><i class="ti ti-check"></i> Scope matches capability — no overpromising</div>
+    <div class="pro-con-pill pro"><i class="ti ti-check"></i> Clean success metrics (Analytics session usage)</div>
+    <div class="pro-con-pill pro"><i class="ti ti-check"></i> No re-education cost inside Analytics</div>
+    <div class="pro-con-pill con"><i class="ti ti-x"></i> Sellers have to navigate to Analytics to use it</div>
+    <div class="pro-con-pill con"><i class="ti ti-x"></i> Re-education needed when we graduate to top-level</div>
+    <div class="pro-con-pill con"><i class="ti ti-x"></i> Limits the "everywhere" vision of the agentic future</div>
   </div>
 </div>
 
@@ -899,9 +915,9 @@
 <div class="section" style="margin-top:0;">
   <div class="section-header">
     <div class="section-title-group">
-      <div class="section-badge badge-alternative"><i class="ti ti-alert-triangle"></i> Current Direction — Requires Fast Product Execution</div>
-      <h2>Option 2 — Top-Level Entry Point from Day 1</h2>
-      <div class="section-sub">Sparkle icon in the top bar + FAB accessible from any page. v1 is analytics-only but the surface signals first-class product status.</div>
+      <div class="section-badge badge-alternative"><i class="ti ti-arrow-up"></i> Higher ambition · requires fast execution</div>
+      <h2>Option 2 — Elevate to top-level now</h2>
+      <div class="section-sub">Move from Analytics → Chat to a global sparkle icon + FAB. Accessible from any page. v1 only answers analytics questions but the placement signals the full agentic vision.</div>
     </div>
   </div>
 
@@ -1418,7 +1434,7 @@
     <div class="rec-subtitle">Based on the mocks above, here's the clearest way to think about the choice.</div>
     <div class="rec-grid">
       <div class="rec-col">
-        <h4 class="yellow">Choose Option 1 (Analytics-Scoped) if...</h4>
+        <h4 class="yellow">Stay with Option 1 (analytics-scoped) if...</h4>
         <div class="rec-row"><i class="ti ti-check"></i> You want to ship fast and prove value before expanding scope</div>
         <div class="rec-row"><i class="ti ti-check"></i> The team doesn't yet have a strong out-of-analytics answer for cross-page AI questions</div>
         <div class="rec-row"><i class="ti ti-check"></i> You want clean success metrics (e.g. "% of Analytics sessions that use AI")</div>
@@ -1426,7 +1442,7 @@
         <div class="rec-row"><i class="ti ti-check"></i> You're comfortable promoting the AI surface to top-level in v2 once it covers 3+ page types</div>
       </div>
       <div class="rec-col">
-        <h4 class="gray">Choose Option 2 (Top-Level) if...</h4>
+        <h4 class="gray">Elevate to Option 2 (top-level) if...</h4>
         <div class="rec-row"><i class="ti ti-check"></i> Leadership is committed to a public "Whatnot AI" narrative and the bot is a flagship launch</div>
         <div class="rec-row"><i class="ti ti-check"></i> You have a strong graceful-degradation answer for cross-page questions (e.g. proactive handoff copy)</div>
         <div class="rec-row"><i class="ti ti-check"></i> The analytics-only v1 will expand to 2+ more capabilities within 6–8 weeks of launch</div>
@@ -1434,7 +1450,7 @@
       </div>
     </div>
     <div class="rec-verdict">
-      <strong>Suggested path:</strong> Ship v1 with Option 1 entry points — specifically the combination of <strong>1A (Ask AI tab)</strong> + <strong>1B (inline chart buttons)</strong>. This covers the full analytics surface with zero discovery ambiguity. When v2 expands to inventory or show planning, graduate the bot to a top-level FAB + top bar icon at that point — the re-education cost is low because sellers already have a mental model of "AI answers questions about my store data." The risk of shipping Option 2 with an analytics-only v1 is that sellers who open the bot from the Orders or Inventory page will receive a graceful deflection, and repeated deflections erode the trust that makes the global placement valuable in the first place.
+      <strong>Suggested path:</strong> The current <strong>Analytics → Chat tab</strong> is the right place to start — but improve the tab itself with inline chart buttons (1B) to make the bot feel like a native part of the analytics experience, not an afterthought. When capabilities expand beyond analytics (CX, inventory, scheduling), graduate to Option 2 at that point. The re-education cost will be low — sellers will already have a mental model of "AI that answers questions about my store." The risk of jumping to Option 2 now is that sellers opening the bot from Orders or Inventory will hit repeated deflections, which erodes trust faster than low placement ever could.
     </div>
   </div>
 </div>
