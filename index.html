@@ -915,12 +915,278 @@
   </div>
 </div>
 
-<div class="section" style="margin-top:0;">
-  <div class="mocks-grid">
+<!-- Inject main spec CSS needed for entry point mocks -->
+<style>
+  /* Mock frame wrappers */
+  .mock { margin-bottom: 40px; }
+  .mock .mock-label { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .mock .mock-title { font-size: 14.5px; font-weight: 500; }
+  .mock .mock-sub { font-size: 12px; color: var(--text-secondary); }
+  .mock-frame { background: #fff; border: 0.5px solid rgba(0,0,0,0.16); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+  /* Priority badges */
+  .pri { display: inline-flex; align-items: center; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .pri-v1 { background: #E1F5EE; color: #085041; }
+  .pri-v2 { background: #FAEEDA; color: #412402; }
+  /* Browser bar */
+  .browser-bar { background: #f3eff5; padding: 8px 12px; display: flex; align-items: center; gap: 8px; }
+  .browser-bar .dot { width: 9px; height: 9px; border-radius: 50%; background: #d4c4d8; }
+  .browser-bar .url { flex: 1; font-size: 11px; color: #8a8a85; background: #fff; padding: 4px 12px; border-radius: 4px; margin-left: 6px; }
+  /* App chrome */
+  .app-header { padding: 12px 18px; border-bottom: 0.5px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 12px; background: #fff; position: relative; }
+  .logo-block { display: flex; align-items: center; gap: 8px; }
+  .logo-mark { width: 26px; height: 26px; border-radius: 6px; background: #FFE817; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; color: #000; }
+  .pill-dark { background: #000; color: #fff; padding: 4px 10px; border-radius: 5px; font-size: 12px; font-weight: 500; }
+  .header-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+  .header-actions i { font-size: 17px; color: #5a5a58; cursor: pointer; }
+  .avatar-circle { width: 28px; height: 28px; border-radius: 50%; background: #E6F1FB; color: #0C447C; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; }
+  /* Command pill */
+  .command-pill { flex: 1; max-width: 380px; margin: 0 auto; background: #fafaf8; border: 0.5px solid rgba(0,0,0,0.16); border-radius: 20px; padding: 7px 14px; display: flex; align-items: center; gap: 10px; }
+  .command-pill.highlight { border: 1.5px solid #FFE817; background: #000; }
+  .command-pill.highlight .ph { color: rgba(255,255,255,0.7); }
+  .command-pill.highlight .kbd { background: rgba(255,255,255,0.12); border-color: transparent; color: rgba(255,255,255,0.5); }
+  .command-pill .ph { flex: 1; font-size: 13px; color: #5a5a58; }
+  .command-pill .kbd { font-size: 11px; color: #8a8a85; background: #fff; padding: 2px 6px; border-radius: 3px; border: 0.5px solid rgba(0,0,0,0.08); }
+  .command-pill .spark { font-size: 14px; color: #FFE817; }
+  /* App body & left nav */
+  .app-body { display: flex; min-height: 220px; }
+  .left-nav { width: 168px; background: #fafaf8; border-right: 0.5px solid rgba(0,0,0,0.08); padding: 10px 8px; }
+  .left-nav .item { padding: 6px 10px; font-size: 12px; color: #5a5a58; display: flex; align-items: center; gap: 8px; border-radius: 5px; }
+  .left-nav .item i { font-size: 14px; }
+  .left-nav .item.active { background: #000; color: #fff; font-weight: 500; }
+  .left-nav .item.ai-active { background: #000; color: #fff; font-weight: 500; border: 1.5px solid #FFE817; }
+  .left-nav .ai-active i.spark { color: #FFE817; }
+  .left-nav .badge-new { margin-left: auto; background: #FFE817; color: #000; padding: 1px 5px; border-radius: 3px; font-size: 9px; font-weight: 600; }
+  .main-area { flex: 1; padding: 18px 24px; position: relative; }
+  .greeting { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+  .greeting-sub { font-size: 13px; color: #5a5a58; margin-bottom: 18px; }
+  .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+  .metric { background: #fafaf8; border-radius: 8px; padding: 10px 12px; }
+  .metric .label { font-size: 11px; color: #5a5a58; margin-bottom: 4px; }
+  .metric .value { font-size: 18px; font-weight: 500; }
+  /* FABs */
+  .fab-round { position: absolute; bottom: 16px; right: 16px; width: 52px; height: 52px; border-radius: 50%; background: #000; border: 2px solid #FFE817; display: flex; align-items: center; justify-content: center; }
+  .fab-round i { color: #FFE817; font-size: 22px; }
+  .fab-pill { position: absolute; bottom: 16px; right: 16px; padding: 11px 16px 11px 14px; border-radius: 26px; background: #000; border: 2px solid #FFE817; display: flex; align-items: center; gap: 8px; color: #fff; }
+  .fab-pill i.spark { color: #FFE817; font-size: 15px; }
+  .fab-pill .label { font-size: 13px; font-weight: 500; }
+  .fab-pill .kbd { font-size: 10px; background: rgba(255,255,255,0.14); padding: 1px 6px; border-radius: 3px; }
+  /* Peek */
+  .peek { position: absolute; bottom: 16px; right: 16px; width: 280px; background: #000; border-radius: 14px; padding: 12px 14px; }
+  .peek .heading { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
+  .peek .heading i.spark { font-size: 13px; color: #FFE817; }
+  .peek .heading .tag { font-size: 11px; color: #FFE817; font-weight: 500; }
+  .peek .heading i.close { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.4); }
+  .peek .body { font-size: 12px; color: #fff; line-height: 1.5; margin-bottom: 10px; }
+  .peek .body b { color: #FFE817; font-weight: 500; }
+  .peek .actions { display: flex; gap: 6px; }
+  .peek .btn-primary { font-size: 11px; padding: 5px 10px; background: #FFE817; color: #412402; border: none; border-radius: 5px; font-weight: 500; cursor: pointer; }
+  .peek .btn-ghost { font-size: 11px; padding: 5px 10px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); border: none; border-radius: 5px; cursor: pointer; }
+  /* Insight strip */
+  .insight-strip { background: #000; border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; color: rgba(255,255,255,0.85); margin-bottom: 10px; }
+  .insight-strip i { font-size: 14px; color: #FFE817; }
+  .insight-strip b { font-weight: 500; color: #FFE817; }
+  /* Pros/cons */
+  .pros-cons { font-size: 12.5px; color: #5a5a58; margin-top: 8px; display: flex; flex-wrap: wrap; gap: 16px; }
+  .pros-cons .pros { color: #0F6E56; }
+  .pros-cons .cons { color: #993C1D; }
+  .pros-cons i { font-size: 13px; }
+</style>
 
-    <!-- 2A: Top bar sparkle + floating panel -->
+<div class="section" style="margin-top:0;">
+  <div style="display:flex; flex-direction:column; gap:0;">
+
+    <!-- A: Subtle icon -->
+    <div class="mock">
+      <div class="mock-label">
+        <span class="pri pri-v1">v1 — preferred</span>
+        <span class="mock-title">A. Subtle sparkle icon — top bar</span>
+        <span class="mock-sub">— sits next to + button · low footprint · ⌘K shortcut still works</span>
+      </div>
+      <div class="mock-frame">
+        <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/home</span></div>
+        <div class="app-header">
+          <div class="logo-block"><div class="logo-mark">W</div><div class="pill-dark">Seller Hub</div></div>
+          <div class="header-actions" style="margin-left:auto;">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:#000;border:1.5px solid #FFE817;cursor:pointer;" title="Ask Seller AI (⌘K)"><i class="ti ti-sparkles" style="font-size:14px;color:#FFE817;"></i></span>
+            <i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="avatar-circle">R</div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="left-nav">
+            <div class="item active"><i class="ti ti-home"></i> Home</div>
+            <div class="item"><i class="ti ti-package"></i> Inventory</div>
+            <div class="item"><i class="ti ti-broadcast"></i> Shows</div>
+            <div class="item"><i class="ti ti-receipt"></i> Orders</div>
+            <div class="item"><i class="ti ti-chart-bar"></i> Analytics</div>
+          </div>
+          <div class="main-area">
+            <div class="greeting">Good morning, Ranidu</div>
+            <div class="metric-grid">
+              <div class="metric"><div class="label">GMV this week</div><div class="value">$18,420</div></div>
+              <div class="metric"><div class="label">Avg viewers</div><div class="value">347</div></div>
+              <div class="metric"><div class="label">Sell-through</div><div class="value">71%</div></div>
+              <div class="metric"><div class="label">Repeat buyers</div><div class="value">42</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <span class="pros"><i class="ti ti-check"></i> Zero header footprint · accessible from any page · ⌘K works · tooltip explains scope</span>
+        <span class="cons"><i class="ti ti-x"></i> If v1 is analytics-only, sellers on Inventory/Orders will open it and hit a capability wall</span>
+      </div>
+    </div>
+
+    <!-- B: Left nav -->
+    <div class="mock">
+      <div class="mock-label">
+        <span class="pri pri-v1">v1 — ship</span>
+        <span class="mock-title">B. Left nav top-level item</span>
+        <span class="mock-sub">— own URL, own page · Notion AI pattern</span>
+      </div>
+      <div class="mock-frame">
+        <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/ask</span></div>
+        <div class="app-header">
+          <div class="logo-block"><div class="logo-mark">W</div><div class="pill-dark">Seller Hub</div></div>
+          <div class="header-actions"><i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="avatar-circle">R</div></div>
+        </div>
+        <div class="app-body">
+          <div class="left-nav">
+            <div class="item"><i class="ti ti-home"></i> Home</div>
+            <div class="item"><i class="ti ti-package"></i> Inventory</div>
+            <div class="item"><i class="ti ti-broadcast"></i> Shows</div>
+            <div class="item ai-active"><i class="ti ti-sparkles spark"></i> Ask Whatnot <span class="badge-new">NEW</span></div>
+            <div class="item"><i class="ti ti-receipt"></i> Orders</div>
+            <div class="item"><i class="ti ti-chart-bar"></i> Analytics</div>
+          </div>
+          <div class="main-area">
+            <div class="greeting">Good morning, Ranidu</div>
+            <div class="greeting-sub">3 insights worth a look this morning.</div>
+            <div class="insight-strip"><i class="ti ti-sparkles"></i><span>Tuesday shows convert <b>2.3× higher</b> — add another Tuesday slot?</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <span class="pros"><i class="ti ti-check"></i> First-class product signal · own page sets clear scope · briefing home earns daily opens</span>
+        <span class="cons"><i class="ti ti-x"></i> Seller has to navigate away from current task to use it</span>
+      </div>
+    </div>
+
+    <!-- D: Round FAB -->
+    <div class="mock">
+      <div class="mock-label">
+        <span class="pri pri-v1">v1 — ship</span>
+        <span class="mock-title">D. Round FAB — bottom right</span>
+        <span class="mock-sub">— persistent on-page affordance · pairs with subtle icon (A)</span>
+      </div>
+      <div class="mock-frame">
+        <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/home</span></div>
+        <div class="app-header">
+          <div class="logo-block"><div class="logo-mark">W</div><div class="pill-dark">Seller Hub</div></div>
+          <div class="header-actions"><i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="avatar-circle">R</div></div>
+        </div>
+        <div class="app-body">
+          <div class="left-nav">
+            <div class="item active"><i class="ti ti-home"></i> Home</div>
+            <div class="item"><i class="ti ti-broadcast"></i> Shows</div>
+            <div class="item"><i class="ti ti-receipt"></i> Orders</div>
+            <div class="item"><i class="ti ti-chart-bar"></i> Analytics</div>
+          </div>
+          <div class="main-area">
+            <div class="greeting">Good morning, Ranidu</div>
+            <div class="metric-grid">
+              <div class="metric"><div class="label">GMV this week</div><div class="value">$18,420</div></div>
+              <div class="metric"><div class="label">Avg viewers</div><div class="value">347</div></div>
+              <div class="metric"><div class="label">Sell-through</div><div class="value">71%</div></div>
+              <div class="metric"><div class="label">Repeat buyers</div><div class="value">42</div></div>
+            </div>
+            <button class="fab-round" aria-label="Ask Seller AI"><i class="ti ti-sparkles"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <span class="pros"><i class="ti ti-check"></i> Visible on every page · familiar pattern · no header footprint</span>
+        <span class="cons"><i class="ti ti-x"></i> Present on Inventory/Orders pages where v1 can't fully help — may generate confused interactions</span>
+      </div>
+    </div>
+
+    <!-- E: Labeled pill FAB -->
+    <div class="mock">
+      <div class="mock-label">
+        <span class="pri pri-v1">v1 — ship</span>
+        <span class="mock-title">E. Labeled pill FAB</span>
+        <span class="mock-sub">— more legible than round FAB · shortcut visible · Arc/Raycast pattern</span>
+      </div>
+      <div class="mock-frame">
+        <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">whatnot.com/dashboard/home</span></div>
+        <div class="app-header">
+          <div class="logo-block"><div class="logo-mark">W</div><div class="pill-dark">Seller Hub</div></div>
+          <div class="header-actions"><i class="ti ti-plus"></i><i class="ti ti-bell"></i><div class="avatar-circle">R</div></div>
+        </div>
+        <div class="app-body">
+          <div class="left-nav">
+            <div class="item active"><i class="ti ti-home"></i> Home</div>
+            <div class="item"><i class="ti ti-broadcast"></i> Shows</div>
+            <div class="item"><i class="ti ti-receipt"></i> Orders</div>
+            <div class="item"><i class="ti ti-chart-bar"></i> Analytics</div>
+          </div>
+          <div class="main-area">
+            <div class="greeting">Good morning, Ranidu</div>
+            <div class="metric-grid">
+              <div class="metric"><div class="label">GMV this week</div><div class="value">$18,420</div></div>
+              <div class="metric"><div class="label">Avg viewers</div><div class="value">347</div></div>
+              <div class="metric"><div class="label">Sell-through</div><div class="value">71%</div></div>
+              <div class="metric"><div class="label">Repeat buyers</div><div class="value">42</div></div>
+            </div>
+            <button class="fab-pill"><i class="ti ti-sparkles spark"></i><span class="label">Ask Seller AI</span><span class="kbd">⌘K</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <span class="pros"><i class="ti ti-check"></i> Branded, labeled, shortcut visible · clearer than round FAB</span>
+        <span class="cons"><i class="ti ti-x"></i> Same scope risk as D — appears everywhere, v1 only answers analytics questions</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Tradeoff section -->
+<div class="section" style="margin-top:0; padding-top:0;">
+  <div style="background:#000; border-radius:14px; padding:28px 32px; margin-bottom: 32px;">
+    <div style="font-size:13px;font-weight:600;color:#FFE817;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:16px;">The core tradeoff — top-level entry with analytics-only v1</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:10px;">What goes right</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.7;display:flex;flex-direction:column;gap:6px;">
+          <div><span style="color:#FFE817;">✓</span> One consistent entry point that never needs to move</div>
+          <div><span style="color:#FFE817;">✓</span> Sets up the agentic future — no re-education when CX/inventory capabilities ship</div>
+          <div><span style="color:#FFE817;">✓</span> When sellers open it from Analytics, the experience is seamless and fast</div>
+          <div><span style="color:#FFE817;">✓</span> Signals "first-class AI product" from day one</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:10px;">What goes wrong</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.7;display:flex;flex-direction:column;gap:6px;">
+          <div><span style="color:#ef4444;">✗</span> Seller on Inventory opens FAB → "I can only help with analytics right now" → trust erodes</div>
+          <div><span style="color:#ef4444;">✗</span> The FAB/icon is present on 5 pages but only useful on 1 — creates false expectations</div>
+          <div><span style="color:#ef4444;">✗</span> Harder to attribute success: is low usage because the feature is weak, or because placement is wrong?</div>
+          <div><span style="color:#ef4444;">✗</span> Graceful deflection copy only goes so far — repeated dead ends damage the product's reputation</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:20px;padding-top:16px;border-top:0.5px solid rgba(255,255,255,0.12);font-size:12px;color:rgba(255,255,255,0.5);">
+      <strong style="color:rgba(255,255,255,0.8);">Mitigation if going top-level:</strong> Add a subtle "Analytics only · v1" scope tag inside the panel whenever opened from a non-analytics page. This sets expectations without requiring a separate entry point strategy.
+    </div>
+  </div>
+</div>
+
+<div class="section" style="padding-top:0; margin-top:0;">
+  <div class="mocks-grid">
+    <div class="mock-wrapper" style="display:none;"><!-- placeholder to keep JS intact --></div>
+
+    <!-- 2A: Top bar sparkle + floating panel — KEEP FOR RISK ILLUSTRATION -->
     <div class="mock-wrapper">
-      <div class="mock-label"><div class="letter-badge">A</div> Top Bar Sparkle — Panel Opened from Non-Analytics Page</div>
+      <div class="mock-label"><div class="letter-badge" style="background:#ef4444;">!</div> The Risk — Opening from a Non-Analytics Page</div>
       <div class="frame">
         <div class="browser-chrome">
           <div class="browser-dots"><span></span><span></span><span></span></div>
