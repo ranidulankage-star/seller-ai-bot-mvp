@@ -933,11 +933,12 @@
 
 <!-- Scoped CSS for main-spec entry point mocks — prefixed with .spec-mock to avoid conflicts -->
 <style>
-  .spec-mock { margin-bottom: 40px; }
-  .spec-mock .smock-label { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-  .spec-mock .smock-title { font-size: 14px; font-weight: 500; }
-  .spec-mock .smock-sub { font-size: 12px; color: #5a5a58; }
-  .smock-frame { background: #fff; border: 0.5px solid rgba(0,0,0,0.16); border-radius: 10px; overflow: hidden; max-width: 100%; }
+  .spec-mock { margin-bottom: 48px; }
+  .spec-mock .smock-label { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .spec-mock .smock-title { font-size: 14.5px; font-weight: 600; color: #1a1a1a; }
+  .spec-mock .smock-sub { font-size: 12px; color: #8a8a85; }
+  .smock-frame { background: #fff; border: 0.5px solid rgba(0,0,0,0.16); border-radius: 10px; overflow: hidden; max-width: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .smock-frame .s-app-body { display: flex; min-height: 200px; max-height: 420px; overflow: hidden; }
   .spec-mock .spri { display: inline-flex; align-items: center; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
   .spec-mock .spri-v1 { background: #E1F5EE; color: #085041; }
   .spec-mock .spri-v2 { background: #FAEEDA; color: #412402; }
@@ -1016,7 +1017,7 @@
             <div style="padding:10px 14px;font-size:12px;font-weight:700;color:#000;border-bottom:2px solid #000;cursor:pointer;">Chat</div>
           </div>
           <!-- Chat page content -->
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#fff;">
+          <div style="height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#fff;overflow:hidden;">
             <div style="font-size:20px;font-weight:700;margin-bottom:6px;text-align:center;">Ask about your business</div>
             <div style="font-size:13px;color:#888;margin-bottom:20px;text-align:center;">Get insights about your sales, shows, products, and more.</div>
             <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;max-width:520px;">
@@ -1040,7 +1041,7 @@
     </div>
   </div>
 
-  <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#999;margin:28px 0 14px;">Improvements to Option 1 — better entry points within Analytics</div>
+  <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#bbb;margin:48px 0 20px;padding-top:32px;border-top:1px solid rgba(0,0,0,0.06);">Improvements to Option 1 — better entry points within Analytics</div>
   <div style="display:flex; flex-direction:column; gap:0;">
 
     <!-- A: Subtle icon -->
